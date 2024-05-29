@@ -1,4 +1,4 @@
-const {Ship} = require('./index.js');
+const {Ship} = require('./ship.js');
 
 describe('Ship', ()=>{
     test('Say hi', ()=>{

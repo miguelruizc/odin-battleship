@@ -22,4 +22,5 @@ class Ship{
         if(this.hits >= this.length) this.sunkStatus = true;
     }
 }
+
 module.exports = {Ship};
