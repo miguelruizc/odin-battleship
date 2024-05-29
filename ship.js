@@ -1,26 +1,26 @@
-class Ship{
-    constructor(length = 1){
-        this.length = length;
-        this.hits = 0;
-        this.sunkStatus = false;
-    }
+class Ship {
+	constructor(length = 1) {
+		this.length = length;
+		this.hits = 0;
+		this.sunkStatus = false;
+	}
 
-    sayHi(){
-        return 'Hello, I am a ship!';
-    }
+	sayHi() {
+		return 'Hello, I am a ship!';
+	}
 
-    getLength(){
-        return this.length;
-    }
+	getLength() {
+		return this.length;
+	}
 
-    isSunk(){
-        return this.sunkStatus;
-    }
+	isSunk() {
+		return this.sunkStatus;
+	}
 
-    takeHit(){
-        this.hits++;
-        if(this.hits >= this.length) this.sunkStatus = true;
-    }
+	takeHit() {
+		this.hits++;
+		if (this.hits >= this.length) this.sunkStatus = true;
+	}
 }
 
-module.exports = {Ship};
+module.exports = { Ship };
