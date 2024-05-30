@@ -1,4 +1,4 @@
-class Ship {
+export class Ship {
 	constructor(length = 1) {
 		this.length = length;
 		this.hits = 0;
@@ -36,5 +36,3 @@ class Ship {
 		return this.coordinates;
 	}
 }
-
-module.exports = { Ship };

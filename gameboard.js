@@ -1,7 +1,6 @@
-const { Ship } = require('./ship.js');
-const _ = require('lodash');
+import _ from 'lodash';
 
-class Gameboard {
+export class Gameboard {
 	constructor() {
 		this.board = this.buildBoard(10, 10, 0);
 		this.ships = [];
@@ -133,10 +132,10 @@ class Gameboard {
 		return this.ships;
 	}
 
-	areShipsSunk(){
+	areShipsSunk() {
 		let allSunk = true;
-		this.ships.forEach(ship => {
-			if(!ship.isSunk()) {
+		this.ships.forEach((ship) => {
+			if (!ship.isSunk()) {
 				allSunk = false;
 			}
 		});
@@ -144,8 +143,3 @@ class Gameboard {
 		return allSunk;
 	}
 }
-
-const gameboard = new Gameboard();
-gameboard.placeShip(new Ship(5), 0, 0, 'vertical');
-
-module.exports = { Gameboard };
