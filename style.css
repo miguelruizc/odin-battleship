@@ -4,13 +4,27 @@
     padding: 0px;
 }
 
+#board1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .boardRow {
+    display: flex;
     background-color: #a9ff77;
 }
 
 .boardCell {
-    width: 10px;
-    height: 10px;
-    margin: 10px;
+    width: 1rem;
+    margin: 5px;
     background-color: #df50ff;
+    color:white;
+    text-align: center;
+}
+
+.temporalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
 }

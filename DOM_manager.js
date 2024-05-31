@@ -1,5 +1,10 @@
 export class DOM_manager {
-	constructor() {}
+	constructor() {
+		this.shotButtonToggle = false;
+		this.placeShitButtonToggle = false;
+		this.shotButtonAddEventListener();
+		this.placeShipButtonAddEventListener();
+	}
 
 	render() {}
 
@@ -10,7 +15,6 @@ export class DOM_manager {
 		// Board Div
 		const boardDiv = document.getElementById('board1');
 
-		//
 		for (let i = 0; i < board.length; i++) {
 			// Create row
 			const row = document.createElement('div');
@@ -30,4 +34,31 @@ export class DOM_manager {
 			boardDiv.appendChild(row);
 		}
 	}
+
+	shotButtonAddEventListener() {
+		const button = document.getElementById('shotButton');
+		button.addEventListener('click', this.shotButtonEventHandler.bind(this));
+	}
+
+	shotButtonEventHandler(event) {
+		this.shotButtonToggle = true;
+		this.placeShipButtonToggle = false;
+		event.target.style.backgroundColor = 'lightgreen';
+		event.target.nextElementSibling.style.backgroundColor = 'white';
+	}
+
+	placeShipButtonAddEventListener() {
+		const button = document.getElementById('placeShipButton');
+		button.addEventListener('click', this.placeShipButtonEventHandler.bind(this));
+	}
+
+	placeShipButtonEventHandler(event) {
+		this.placeShipButtonToggle = true;
+		this.shotButtonToggle = false;
+		event.target.style.backgroundColor = 'lightgreen';
+		event.target.previousElementSibling.style.backgroundColor = 'white';
+	}
+
+	// Todo event listener to cells to trigger shot
+	//& place ship
 }
