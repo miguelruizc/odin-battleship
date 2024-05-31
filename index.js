@@ -1,5 +1,6 @@
 import { DOM_manager } from './DOM_manager.js';
 import { Gameboard } from './gameboard.js';
+import { Pubsub } from './pubsub.js';
 
 const dom_manager = new DOM_manager();
 const gameboard = new Gameboard();
