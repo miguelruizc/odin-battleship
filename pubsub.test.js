@@ -1,4 +1,5 @@
 import { Pubsub } from './pubsub.js';
+import { jest } from '@jest/globals';
 
 describe('Pubsub', () => {
 	test('Pubsub object exists', () => {
@@ -43,5 +44,41 @@ describe('Pubsub', () => {
 					eventData: { coordinatesX: 100, coordinatesY: 200 },
 				},
 			]);
+	});
+
+	test('Can subscribe an object method to events of cool type', () => {
+		const pubsub = new Pubsub();
+		const object = {
+			// Arrow function to preserve 'this' context
+			coolEventHandler: () => {
+				return 'I handle the cool events';
+			},
+		};
+		pubsub.subscribe(object.coolEventHandler, 'coolEvent');
+		expect(pubsub.getSubscribers()) //
+			.toEqual([{ coolEvent: object.coolEventHandler }]);
+	});
+
+	test('Can broadcast an event by calling the method provided on subscribe', () => {
+		const pubsub = new Pubsub();
+		const object = {
+			testEventHandler: () => {
+				console.log(
+					'This object method was called when broadcasting a "testEvent"'
+				);
+			},
+		};
+
+		const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+
+		pubsub.subscribe(object.testEventHandler, 'testEvent');
+		pubsub.publish('testEvent', {});
+		pubsub.broadcast();
+
+		expect(consoleSpy).toHaveBeenCalledWith(
+			'This object method was called when broadcasting a "testEvent"'
+		);
+
+		consoleSpy.mockRestore;
 	});
 });

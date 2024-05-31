@@ -8,6 +8,19 @@ const gameboard = new Gameboard();
 dom_manager.renderBoard(gameboard.getBoard());
 dom_manager.addBoardEventListeners(10);
 
+const pubsub = new Pubsub();
+const object = {
+	testEventHandler: () => {
+		console.log(
+			'This object method was called when broadcasting a "testEvent"'
+		);
+	},
+};
+
+pubsub.subscribe(object.testEventHandler, 'testEvent');
+pubsub.publish('testEvent', {});
+pubsub.broadcast();
+
 // TODO: Add a pub/sub object
 // Make DOM_manager generate shot events (publish event)
 // Make DOM_manager generate ship placement events (publish event)

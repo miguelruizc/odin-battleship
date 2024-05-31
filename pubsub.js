@@ -1,8 +1,12 @@
 export class Pubsub {
 	constructor() {
 		this.events = [];
+		this.subscribers = [];
 	}
 
+	getSubscribers() {
+		return this.subscribers;
+	}
 	getEvents() {
 		return this.events;
 	}
@@ -30,5 +34,23 @@ export class Pubsub {
 
 			if (isUnique) return id;
 		}
+	}
+
+	subscribe(method, eventType) {
+		this.subscribers.push({ [eventType]: method });
+	}
+
+	broadcast() {
+		// Iterate over events
+		this.events.forEach((event) => {
+			// Iterate over subscribers
+			this.subscribers.forEach((sub) => {
+				if (event.eventType in sub) {
+					// Trigger callback functions passed on subscribe
+					let callback = sub[event.eventType];
+					callback();
+				}
+			});
+		});
 	}
 }
