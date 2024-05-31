@@ -24,6 +24,7 @@ export class DOM_manager {
 				// Create cell
 				const cell = document.createElement('div');
 				cell.setAttribute('class', 'boardCell');
+				cell.setAttribute('id', `row${i},col${j}`);
 				cell.textContent = board[i][j];
 
 				// Append cell
@@ -59,6 +60,20 @@ export class DOM_manager {
 		event.target.previousElementSibling.style.backgroundColor = 'white';
 	}
 
-	// Todo event listener to cells to trigger shot
+	addBoardEventListeners(boardSize) {
+		for (let i = 0; i < boardSize; i++) {
+			for (let j = 0; j < boardSize; j++) {
+				const element = document.getElementById(`row${i},col${j}`);
+				element.addEventListener('click', () => {
+					this.clickCellEventHandler(i, j);
+				});
+			}
+		}
+	}
+
+	clickCellEventHandler(row, col) {
+		if (this.shotButtonToggle) alert(`Massive shot at row${row},col${col}`);
+		else alert(`ship placed at row${row},col${col}`);
+	}
 	//& place ship
 }

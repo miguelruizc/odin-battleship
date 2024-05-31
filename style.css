@@ -2,12 +2,46 @@
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
+    font-size: 0.8rem;
 }
-
-#board1 {
+body {
+    height: 100vh;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
+/* GRID LAYOUT*/
+/* Main container */
+#main {
+    width: 200px;
+    height: 200px;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+}
+/* Y Axis */
+#yAxis1 { grid-area: 1 / 1 / 11 / 2; background-color: #ff9999;}
+#yAxis1 { display: flex; flex-direction: column;}
+#yAxis1 div {flex: 1}
+
+/* X Axis */
+#xAxis1 { grid-area: 11 / 2 / 12 / 12; background-color: #63ff78; }
+#xAxis1 { display: flex;}
+#xAxis1 div {flex: 1}
+
+/* Board */
+#board1 { grid-area: 1 / 2 / 11 / 12; background-color: #ffcc5d;}
+/* toggle shot/place buttons (TEMP) */
+.temporalButtons { grid-area: 12 / 2 / 13 / 12; background-color: #43d0ff; }
+/*END GRID LAYOUT*/
+#xAxis1 {
+    display: flex;
+}
+#board1 {
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
 }
 
 .boardRow {
@@ -16,15 +50,33 @@
 }
 
 .boardCell {
-    width: 1rem;
-    margin: 5px;
+    flex: 1;
     background-color: #df50ff;
     color:white;
-    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* center cells text */
+.boardCell, 
+#xAxis1 div,
+#yAxis1 div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .temporalButtons {
     display: flex;
     justify-content: center;
     gap: 5px;
+}
+
+.boardCell:hover {
+    background-color: #fbff00;
+    color: black;
+}
+.boardCell:active {
+    background-color: white;
+    color: red;
 }
