@@ -1,3 +1,5 @@
+import { Ship } from './ship.js';
+
 export class Pubsub {
 	constructor() {
 		this.events = [];
@@ -41,6 +43,8 @@ export class Pubsub {
 	}
 
 	broadcast() {
+		// TO-DO: Pop event from queue and remove it, after broadcasting it
+
 		// Iterate over events
 		this.events.forEach((event) => {
 			// Iterate over subscribers
@@ -53,6 +57,14 @@ export class Pubsub {
 					// Gameboard.takeShot(row, col){}
 					if (callback.name === 'bound takeShot')
 						callback(event.eventData.row, event.eventData.col);
+					// Gameboard.placeShip(ship, row, col, direction)
+					else if (callback.name === 'bound placeShip')
+						callback(
+							new Ship(1),
+							event.eventData.row,
+							event.eventData.col,
+							'horizontal'
+						);
 					// Other:
 					else callback();
 				}

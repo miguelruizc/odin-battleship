@@ -148,4 +148,31 @@ describe('Pubsub/Gameboard/DOM_manager tests', () => {
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		]);
 	});
+
+	test('Pubsub broadcast placementEvent from DOM_manager to Gameboard', () => {
+		const pubsub = new Pubsub();
+		const DOMman = new DOM_manager(pubsub, true);
+		const gameboard = new Gameboard(pubsub);
+		gameboard.subscribeToPlacementEvents();
+
+		DOMman.shotButtonToggle = false;
+		DOMman.placeShipButtonToggle = true;
+		// Publish shotEvent
+		DOMman.clickCellEventHandler(0, 0);
+
+		pubsub.broadcast();
+
+		expect(gameboard.getBoard()).toEqual([
+			[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		]);
+	});
 });

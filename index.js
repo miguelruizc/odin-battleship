@@ -20,7 +20,3 @@ const object = {
 pubsub.subscribe(object.testEventHandler, 'testEvent');
 pubsub.publish('testEvent', {});
 pubsub.broadcast();
-
-// Make PubSub broadcast shot events
-// Make gameboard know when a shot event happens to trigger reaction (subscribe to shot events)
-// Make gameboard know when a ship placement event happen to trigger reaction (subscribe to placement event)

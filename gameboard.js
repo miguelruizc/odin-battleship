@@ -157,4 +157,8 @@ export class Gameboard {
 	subscribeToShotEvents() {
 		this.pubsub.subscribe(this.takeShot.bind(this), 'shotEvent');
 	}
+
+	subscribeToPlacementEvents() {
+		this.pubsub.subscribe(this.placeShip.bind(this), 'placementEvent');
+	}
 }
