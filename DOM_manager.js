@@ -4,7 +4,9 @@ export class DOM_manager {
 	constructor(pubsub, testInstance = false) {
 		if (!testInstance) {
 			this.pubsub = pubsub;
-			this.shotButtonToggle = false;
+			this.shotButtonToggle = true;
+			document.getElementById('shotButton').style.backgroundColor =
+				'lightgreen';
 			this.placeShipButtonToggle = false;
 			this.shotButtonAddEventListener();
 			this.placeShipButtonAddEventListener();
@@ -43,6 +45,9 @@ export class DOM_manager {
 			//Append row
 			boardDiv.appendChild(row);
 		}
+
+		// Add board event listeners
+		this.addBoardEventListeners(board.length);
 	}
 
 	shotButtonAddEventListener() {
@@ -87,8 +92,14 @@ export class DOM_manager {
 	}
 
 	clickCellEventHandler(row, col) {
-		if (this.shotButtonToggle)
+		if (this.shotButtonToggle) {
+			alert(`shotEvent: row${row}, col${col}`);
 			this.pubsub.publish('shotEvent', { row: row, col: col });
-		else this.pubsub.publish('placementEvent', { row: row, col: col });
+		} else {
+			alert(`placementEvent: row${row}, col${col}`);
+			this.pubsub.publish('placementEvent', { row: row, col: col });
+		}
 	}
+
+	subscribeToPubsub() {}
 }

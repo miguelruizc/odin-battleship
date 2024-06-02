@@ -6,6 +6,7 @@ export class Gameboard {
 		this.board = this.buildBoard(10, 10, 0);
 		this.ships = [];
 		this.pubsub = pubsub;
+		this.subscribeToPubsub();
 	}
 
 	sayHi() {
@@ -31,6 +32,9 @@ export class Gameboard {
 	}
 
 	placeShip(ship, row, col, direction) {
+		// return true if ship was placed
+		// return false if not
+
 		// Get all positions
 		const coordinates = this.computeCoordinates(
 			row,
@@ -40,7 +44,7 @@ export class Gameboard {
 		);
 
 		// check positions valid
-		if (!this.isPositionValid(coordinates)) return;
+		if (!this.isPositionValid(coordinates)) return false;
 
 		// place ship
 		coordinates.forEach((position) => {
@@ -50,6 +54,11 @@ export class Gameboard {
 		// Add ship to array
 		ship.setCoordinates(coordinates);
 		this.ships.push(ship);
+
+		// DEBUG:
+		console.table(this.getBoard());
+
+		return true;
 	}
 
 	computeCoordinates(row, col, direction, length) {
@@ -111,11 +120,20 @@ export class Gameboard {
 			ship.takeHit();
 			// mark board
 			this.board[row][col] = 5;
+
+			// DEBUG:
+			console.table(this.board);
+
+			return true;
 		}
 
 		// Case: Miss
 		else {
 			this.board[row][col] = 9;
+
+			// DEBUG:
+			console.table(this.board);
+
 			return true;
 		}
 	}
@@ -152,6 +170,11 @@ export class Gameboard {
 		});
 
 		return allSunk;
+	}
+
+	subscribeToPubsub() {
+		this.subscribeToShotEvents();
+		this.subscribeToPlacementEvents();
 	}
 
 	subscribeToShotEvents() {
