@@ -55,10 +55,10 @@ export class Pubsub {
 					let callback = sub[event.eventType];
 
 					// Check type of function
-					// Gameboard.takeShot(row, col){}
+					// 'takeShot' event: Gameboard.takeShot(row, col){}
 					if (callback.name === 'bound takeShot')
 						callback(event.eventData.row, event.eventData.col);
-					// Gameboard.placeShip(ship, row, col, direction)
+					// 'placeShip' event: Gameboard.placeShip(ship, row, col, direction)
 					else if (callback.name === 'bound placeShip')
 						callback(
 							new Ship(1),
@@ -66,6 +66,11 @@ export class Pubsub {
 							event.eventData.col,
 							'horizontal'
 						);
+					// 'boardUpdate' event: DOM_manager.updateBoard
+					else if (callback.name === 'bound renderBoard') {
+						const board = event.eventData;
+						callback(board);
+					}
 					// Other:
 					else callback();
 				}

@@ -6,7 +6,7 @@ export class Gameboard {
 		this.board = this.buildBoard(10, 10, 0);
 		this.ships = [];
 		this.pubsub = pubsub;
-		this.subscribeToPubsub();
+		if (pubsub !== null) this.subscribeToPubsub();
 	}
 
 	sayHi() {
@@ -55,9 +55,7 @@ export class Gameboard {
 		ship.setCoordinates(coordinates);
 		this.ships.push(ship);
 
-		// DEBUG:
-		console.table(this.getBoard());
-
+		this.publishBoardUpdate();
 		return true;
 	}
 
@@ -121,9 +119,7 @@ export class Gameboard {
 			// mark board
 			this.board[row][col] = 5;
 
-			// DEBUG:
-			console.table(this.board);
-
+			this.publishBoardUpdated();
 			return true;
 		}
 
@@ -131,9 +127,7 @@ export class Gameboard {
 		else {
 			this.board[row][col] = 9;
 
-			// DEBUG:
-			console.table(this.board);
-
+			this.publishBoardUpdate();
 			return true;
 		}
 	}
@@ -183,5 +177,11 @@ export class Gameboard {
 
 	subscribeToPlacementEvents() {
 		this.pubsub.subscribe(this.placeShip.bind(this), 'placementEvent');
+	}
+
+	publishBoardUpdate() {
+		if (this.pubsub !== null) {
+			this.pubsub.publish('boardUpdateEvent', this.board);
+		}
 	}
 }

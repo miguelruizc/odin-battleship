@@ -7,5 +7,3 @@ const DOM = new DOM_manager(pubsub);
 const gameboard = new Gameboard(pubsub);
 
 DOM.renderBoard(gameboard.getBoard());
-
-// TODO: Implement pubsub in browser

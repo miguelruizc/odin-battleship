@@ -10,6 +10,7 @@ export class DOM_manager {
 			this.placeShipButtonToggle = false;
 			this.shotButtonAddEventListener();
 			this.placeShipButtonAddEventListener();
+			this.subscribeToPubsub();
 		} else {
 			this.pubsub = pubsub;
 			this.shotButtonToggle = false;
@@ -25,6 +26,7 @@ export class DOM_manager {
 
 		// Board Div
 		const boardDiv = document.getElementById('board1');
+		boardDiv.innerText = '';
 
 		for (let i = 0; i < board.length; i++) {
 			// Create row
@@ -93,13 +95,17 @@ export class DOM_manager {
 
 	clickCellEventHandler(row, col) {
 		if (this.shotButtonToggle) {
-			alert(`shotEvent: row${row}, col${col}`);
 			this.pubsub.publish('shotEvent', { row: row, col: col });
 		} else {
-			alert(`placementEvent: row${row}, col${col}`);
 			this.pubsub.publish('placementEvent', { row: row, col: col });
 		}
 	}
 
-	subscribeToPubsub() {}
+	subscribeToPubsub() {
+		this.subscribeToBoardUpdateEvents();
+	}
+
+	subscribeToBoardUpdateEvents() {
+		this.pubsub.subscribe(this.renderBoard.bind(this), 'boardUpdateEvent');
+	}
 }

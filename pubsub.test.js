@@ -138,4 +138,28 @@ describe('Pubsub/Gameboard/DOM_manager tests', () => {
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		]);
 	});
+
+	test('Board update generate an event an is broadcasted', () => {
+		const pubsub = new Pubsub();
+		const gameboard = new Gameboard(pubsub);
+
+		const object = {
+			method: () => {
+				console.log(`method called as a trigger for boardUpdateEvent`);
+			},
+		};
+
+		const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+
+		pubsub.subscribe(object.method, 'boardUpdateEvent');
+
+		gameboard.takeShot(0, 0);
+		gameboard.publishBoardUpdated();
+
+		expect(consoleSpy).toHaveBeenCalledWith(
+			'method called as a trigger for boardUpdateEvent'
+		);
+
+		consoleSpy.mockRestore;
+	});
 });
