@@ -23,6 +23,7 @@ export class Pubsub {
 
 		// Store event object
 		this.events.push(event);
+		this.broadcast();
 	}
 
 	generateUniqueId() {
@@ -43,8 +44,6 @@ export class Pubsub {
 	}
 
 	broadcast() {
-		// TO-DO: Pop event from queue and remove it, after broadcasting it
-
 		// Iterate over events
 		this.events.forEach((event) => {
 			// Iterate over subscribers
@@ -69,6 +68,8 @@ export class Pubsub {
 					else callback();
 				}
 			});
+
+			this.events.pop();
 		});
 	}
 }

@@ -2,21 +2,12 @@ import { DOM_manager } from './DOM_manager.js';
 import { Gameboard } from './gameboard.js';
 import { Pubsub } from './pubsub.js';
 
-const dom_manager = new DOM_manager();
-const gameboard = new Gameboard();
-
-dom_manager.renderBoard(gameboard.getBoard());
-dom_manager.addBoardEventListeners(10);
+import { Queue } from './queue.js';
 
 const pubsub = new Pubsub();
-const object = {
-	testEventHandler: () => {
-		console.log(
-			'This object method was called when broadcasting a "testEvent"'
-		);
-	},
-};
+const DOM = new DOM_manager(pubsub);
+const gameboard = new Gameboard(pubsub);
 
-pubsub.subscribe(object.testEventHandler, 'testEvent');
-pubsub.publish('testEvent', {});
-pubsub.broadcast();
+DOM.renderBoard(gameboard.getBoard());
+
+// TODO: Implement pubsub in browser
