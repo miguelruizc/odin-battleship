@@ -1,9 +1,11 @@
 import _ from 'lodash';
+import { Pubsub } from './pubsub.js';
 
 export class Gameboard {
-	constructor() {
+	constructor(pubsub = null) {
 		this.board = this.buildBoard(10, 10, 0);
 		this.ships = [];
+		this.pubsub = pubsub;
 	}
 
 	sayHi() {
@@ -30,7 +32,12 @@ export class Gameboard {
 
 	placeShip(ship, row, col, direction) {
 		// Get all positions
-		const coordinates = this.computeCoordinates(row, col, direction, ship.getLength());
+		const coordinates = this.computeCoordinates(
+			row,
+			col,
+			direction,
+			ship.getLength()
+		);
 
 		// check positions valid
 		if (!this.isPositionValid(coordinates)) return;
@@ -73,7 +80,10 @@ export class Gameboard {
 				break;
 			}
 			// Case: Position taken
-			if (this.board[arrayCoordinates[i].row][arrayCoordinates[i].col] !== 0) {
+			if (
+				this.board[arrayCoordinates[i].row][arrayCoordinates[i].col] !==
+				0
+			) {
 				valid = false;
 				break;
 			}
@@ -90,7 +100,8 @@ export class Gameboard {
 		if (row < 0 || row > 9 || col < 0 || col > 9) return false;
 
 		// Case: Shot on previous shot
-		if (this.board[row][col] === 9 || this.board[row][col] === 5) return false;
+		if (this.board[row][col] === 9 || this.board[row][col] === 5)
+			return false;
 
 		// Case: Hit ship
 		if (this.board[row][col] !== 0) {
@@ -141,5 +152,9 @@ export class Gameboard {
 		});
 
 		return allSunk;
+	}
+
+	subscribeToShotEvents() {
+		this.pubsub.subscribe(this.takeShot.bind(this), 'shotEvent');
 	}
 }

@@ -1,6 +1,7 @@
 import { Pubsub } from './pubsub.js';
 import { jest } from '@jest/globals';
 import { DOM_manager } from './DOM_manager.js';
+import { Gameboard } from './gameboard.js';
 
 describe('Pubsub', () => {
 	test('Pubsub object exists', () => {
@@ -92,6 +93,8 @@ describe('Pubsub/DOM_manager tests', () => {
 		DOMman.placeShipButtonToggle = false;
 		DOMman.clickCellEventHandler(0, 0);
 
+		pubsub.broadcast();
+
 		expect(pubsub.getEvents()).toEqual([
 			{
 				eventId: 0,
@@ -114,6 +117,35 @@ describe('Pubsub/DOM_manager tests', () => {
 				eventType: 'placementEvent',
 				eventData: { row: 0, col: 0 },
 			},
+		]);
+	});
+});
+
+describe('Pubsub/Gameboard/DOM_manager tests', () => {
+	test('Pubsub broadcasts shotEvent from DOM_manager to Gameboard', () => {
+		const pubsub = new Pubsub();
+		const DOMman = new DOM_manager(pubsub, true);
+		const gameboard = new Gameboard(pubsub);
+		gameboard.subscribeToShotEvents();
+
+		DOMman.shotButtonToggle = true;
+		DOMman.placeShipButtonToggle = false;
+		// Publish shotEvent
+		DOMman.clickCellEventHandler(1, 1);
+
+		pubsub.broadcast();
+
+		expect(gameboard.getBoard()).toEqual([
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 9, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		]);
 	});
 });

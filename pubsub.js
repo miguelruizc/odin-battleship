@@ -48,7 +48,13 @@ export class Pubsub {
 				if (event.eventType in sub) {
 					// Trigger callback functions passed on subscribe
 					let callback = sub[event.eventType];
-					callback();
+
+					// Check type of function
+					// Gameboard.takeShot(row, col){}
+					if (callback.name === 'bound takeShot')
+						callback(event.eventData.row, event.eventData.col);
+					// Other:
+					else callback();
 				}
 			});
 		});
