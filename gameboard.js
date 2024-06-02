@@ -2,9 +2,10 @@ import _ from 'lodash';
 import { Pubsub } from './pubsub.js';
 
 export class Gameboard {
-	constructor(pubsub = null) {
+	constructor(pubsub = null, player = 1) {
 		this.board = this.buildBoard(10, 10, 0);
 		this.ships = [];
+		this.player = player;
 		this.pubsub = pubsub;
 		if (pubsub !== null) this.subscribeToPubsub();
 	}
@@ -119,7 +120,7 @@ export class Gameboard {
 			// mark board
 			this.board[row][col] = 5;
 
-			this.publishBoardUpdated();
+			this.publishBoardUpdate();
 			return true;
 		}
 
@@ -172,16 +173,25 @@ export class Gameboard {
 	}
 
 	subscribeToShotEvents() {
-		this.pubsub.subscribe(this.takeShot.bind(this), 'shotEvent');
+		this.pubsub.subscribe(
+			this.takeShot.bind(this),
+			`shotEvent${this.player}`
+		);
 	}
 
 	subscribeToPlacementEvents() {
-		this.pubsub.subscribe(this.placeShip.bind(this), 'placementEvent');
+		this.pubsub.subscribe(
+			this.placeShip.bind(this),
+			`placementEvent${this.player}`
+		);
 	}
 
 	publishBoardUpdate() {
 		if (this.pubsub !== null) {
-			this.pubsub.publish('boardUpdateEvent', this.board);
+			this.pubsub.publish('boardUpdateEvent', {
+				board: this.board,
+				player: this.player,
+			});
 		}
 	}
 }

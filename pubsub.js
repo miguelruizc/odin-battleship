@@ -25,6 +25,9 @@ export class Pubsub {
 		// Store event object
 		this.eventQ.enqueue(event);
 
+		// LOG PUBLISHED EVENT FOR DEBUGGING
+		console.log(this.eventQ.toString());
+
 		if (broadcast) this.broadcast();
 	}
 
@@ -56,8 +59,9 @@ export class Pubsub {
 
 					// Check type of function
 					// 'takeShot' event: Gameboard.takeShot(row, col){}
-					if (callback.name === 'bound takeShot')
+					if (callback.name === 'bound takeShot') {
 						callback(event.eventData.row, event.eventData.col);
+					}
 					// 'placeShip' event: Gameboard.placeShip(ship, row, col, direction)
 					else if (callback.name === 'bound placeShip')
 						callback(
@@ -68,8 +72,9 @@ export class Pubsub {
 						);
 					// 'boardUpdate' event: DOM_manager.updateBoard
 					else if (callback.name === 'bound renderBoard') {
-						const board = event.eventData;
-						callback(board);
+						const board = event.eventData.board;
+						const player = event.eventData.player;
+						callback(board, player);
 					}
 					// Other:
 					else callback();

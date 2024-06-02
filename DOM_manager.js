@@ -20,12 +20,12 @@ export class DOM_manager {
 
 	render() {}
 
-	renderBoard(board) {
+	renderBoard(board, num) {
 		// Take a 2D board representing a board and renders it in the DOM
 		// each row is a div, each cell is a div
 
 		// Board Div
-		const boardDiv = document.getElementById('board1');
+		const boardDiv = document.getElementById(`board${num}`);
 		boardDiv.innerText = '';
 
 		for (let i = 0; i < board.length; i++) {
@@ -37,7 +37,7 @@ export class DOM_manager {
 				// Create cell
 				const cell = document.createElement('div');
 				cell.setAttribute('class', 'boardCell');
-				cell.setAttribute('id', `row${i},col${j}`);
+				cell.setAttribute('id', `player${num},row${i},col${j}`);
 				cell.textContent = board[i][j];
 
 				// Append cell
@@ -49,7 +49,7 @@ export class DOM_manager {
 		}
 
 		// Add board event listeners
-		this.addBoardEventListeners(board.length);
+		this.addBoardEventListeners(board.length, num);
 	}
 
 	shotButtonAddEventListener() {
@@ -82,22 +82,32 @@ export class DOM_manager {
 		event.target.previousElementSibling.style.backgroundColor = 'white';
 	}
 
-	addBoardEventListeners(boardSize) {
+	addBoardEventListeners(boardSize, player) {
 		for (let i = 0; i < boardSize; i++) {
 			for (let j = 0; j < boardSize; j++) {
-				const element = document.getElementById(`row${i},col${j}`);
+				const element = document.getElementById(
+					`player${player},row${i},col${j}`
+				);
 				element.addEventListener('click', () => {
-					this.clickCellEventHandler(i, j);
+					this.clickCellEventHandler(i, j, player);
 				});
 			}
 		}
 	}
 
-	clickCellEventHandler(row, col) {
+	clickCellEventHandler(row, col, player) {
 		if (this.shotButtonToggle) {
-			this.pubsub.publish('shotEvent', { row: row, col: col });
+			this.pubsub.publish(`shotEvent${player}`, {
+				board: player,
+				row: row,
+				col: col,
+			});
 		} else {
-			this.pubsub.publish('placementEvent', { row: row, col: col });
+			this.pubsub.publish(`placementEvent${player}`, {
+				board: player,
+				row: row,
+				col: col,
+			});
 		}
 	}
 

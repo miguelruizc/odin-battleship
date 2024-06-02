@@ -154,7 +154,7 @@ describe('Pubsub/Gameboard/DOM_manager tests', () => {
 		pubsub.subscribe(object.method, 'boardUpdateEvent');
 
 		gameboard.takeShot(0, 0);
-		gameboard.publishBoardUpdated();
+		gameboard.publishBoardUpdate();
 
 		expect(consoleSpy).toHaveBeenCalledWith(
 			'method called as a trigger for boardUpdateEvent'

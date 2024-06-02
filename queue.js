@@ -17,7 +17,7 @@ export class Queue {
 	}
 
 	toString() {
-		return this.items.toString();
+		return JSON.stringify(this.items, null, 2);
 	}
 
 	iterableArray() {
