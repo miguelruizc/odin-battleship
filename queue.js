@@ -19,4 +19,8 @@ export class Queue {
 	toString() {
 		return this.items.toString();
 	}
+
+	iterableArray() {
+		return this.items;
+	}
 }

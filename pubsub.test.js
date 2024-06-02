@@ -11,7 +11,7 @@ describe('Pubsub', () => {
 
 	test('publish() adds event with a name and data', () => {
 		const pubsub = new Pubsub();
-		pubsub.publish('testEvent', { dataKey: 'dataValue' });
+		pubsub.publish('testEvent', { dataKey: 'dataValue' }, false);
 		expect(pubsub.getEvents()) //
 			.toEqual([
 				{
@@ -24,9 +24,13 @@ describe('Pubsub', () => {
 
 	test('Correctly adds 3 events of different type and data', () => {
 		const pubsub = new Pubsub();
-		pubsub.publish('redEvent', { color: 'red' });
-		pubsub.publish('bananaEvent', { flavour: 'sweet' });
-		pubsub.publish('clickEvent', { coordinatesX: 100, coordinatesY: 200 });
+		pubsub.publish('redEvent', { color: 'red' }, false);
+		pubsub.publish('bananaEvent', { flavour: 'sweet' }, false);
+		pubsub.publish(
+			'clickEvent',
+			{ coordinatesX: 100, coordinatesY: 200 },
+			false
+		);
 
 		expect(pubsub.getEvents()) //
 			.toEqual([
@@ -75,49 +79,12 @@ describe('Pubsub', () => {
 
 		pubsub.subscribe(object.testEventHandler, 'testEvent');
 		pubsub.publish('testEvent', {});
-		pubsub.broadcast();
 
 		expect(consoleSpy).toHaveBeenCalledWith(
 			'This object method was called when broadcasting a "testEvent"'
 		);
 
 		consoleSpy.mockRestore;
-	});
-});
-
-describe('Pubsub/DOM_manager tests', () => {
-	test('DOM_manager publish shotEvent with coordinates to pubsub', () => {
-		const pubsub = new Pubsub();
-		const DOMman = new DOM_manager(pubsub, true);
-		DOMman.shotButtonToggle = true;
-		DOMman.placeShipButtonToggle = false;
-		DOMman.clickCellEventHandler(0, 0);
-
-		pubsub.broadcast();
-
-		expect(pubsub.getEvents()).toEqual([
-			{
-				eventId: 0,
-				eventType: 'shotEvent',
-				eventData: { row: 0, col: 0 },
-			},
-		]);
-	});
-
-	test('DOM_manager publish place ship event with coordinates to pubsub', () => {
-		const pubsub = new Pubsub();
-		const DOMman = new DOM_manager(pubsub, true);
-		DOMman.shotButtonToggle = false;
-		DOMman.placeShipButtonToggle = true;
-		DOMman.clickCellEventHandler(0, 0);
-
-		expect(pubsub.getEvents()).toEqual([
-			{
-				eventId: 0,
-				eventType: 'placementEvent',
-				eventData: { row: 0, col: 0 },
-			},
-		]);
 	});
 });
 
@@ -132,8 +99,6 @@ describe('Pubsub/Gameboard/DOM_manager tests', () => {
 		DOMman.placeShipButtonToggle = false;
 		// Publish shotEvent
 		DOMman.clickCellEventHandler(1, 1);
-
-		pubsub.broadcast();
 
 		expect(gameboard.getBoard()).toEqual([
 			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -159,8 +124,6 @@ describe('Pubsub/Gameboard/DOM_manager tests', () => {
 		DOMman.placeShipButtonToggle = true;
 		// Publish shotEvent
 		DOMman.clickCellEventHandler(0, 0);
-
-		pubsub.broadcast();
 
 		expect(gameboard.getBoard()).toEqual([
 			[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],

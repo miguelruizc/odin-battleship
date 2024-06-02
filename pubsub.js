@@ -1,8 +1,9 @@
 import { Ship } from './ship.js';
+import { Queue } from './queue.js';
 
 export class Pubsub {
 	constructor() {
-		this.events = [];
+		this.eventQ = new Queue();
 		this.subscribers = [];
 	}
 
@@ -10,10 +11,10 @@ export class Pubsub {
 		return this.subscribers;
 	}
 	getEvents() {
-		return this.events;
+		return this.eventQ.iterableArray();
 	}
 
-	publish(eventType, eventData) {
+	publish(eventType, eventData, broadcast = true) {
 		// Create event object
 		let event = {
 			eventId: this.generateUniqueId(),
@@ -22,8 +23,9 @@ export class Pubsub {
 		};
 
 		// Store event object
-		this.events.push(event);
-		this.broadcast();
+		this.eventQ.enqueue(event);
+
+		if (broadcast) this.broadcast();
 	}
 
 	generateUniqueId() {
@@ -31,7 +33,7 @@ export class Pubsub {
 			let id = i;
 			let isUnique = true;
 
-			this.events.forEach((eventObject) => {
+			this.eventQ.iterableArray().forEach((eventObject) => {
 				if (id === eventObject.eventId) isUnique = false;
 			});
 
@@ -44,8 +46,8 @@ export class Pubsub {
 	}
 
 	broadcast() {
-		// Iterate over events
-		this.events.forEach((event) => {
+		while (!this.eventQ.isEmpty()) {
+			const event = this.eventQ.dequeue();
 			// Iterate over subscribers
 			this.subscribers.forEach((sub) => {
 				if (event.eventType in sub) {
@@ -68,8 +70,6 @@ export class Pubsub {
 					else callback();
 				}
 			});
-
-			this.events.pop();
-		});
+		}
 	}
 }
