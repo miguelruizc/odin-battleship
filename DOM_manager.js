@@ -1,9 +1,18 @@
+import { Pubsub } from './pubsub.js';
+
 export class DOM_manager {
-	constructor() {
-		this.shotButtonToggle = false;
-		this.placeShitButtonToggle = false;
-		this.shotButtonAddEventListener();
-		this.placeShipButtonAddEventListener();
+	constructor(pubsub, testInstance = false) {
+		if (!testInstance) {
+			this.pubsub = pubsub;
+			this.shotButtonToggle = false;
+			this.placeShipButtonToggle = false;
+			this.shotButtonAddEventListener();
+			this.placeShipButtonAddEventListener();
+		} else {
+			this.pubsub = pubsub;
+			this.shotButtonToggle = false;
+			this.placeShipButtonToggle = false;
+		}
 	}
 
 	render() {}
@@ -38,7 +47,10 @@ export class DOM_manager {
 
 	shotButtonAddEventListener() {
 		const button = document.getElementById('shotButton');
-		button.addEventListener('click', this.shotButtonEventHandler.bind(this));
+		button.addEventListener(
+			'click',
+			this.shotButtonEventHandler.bind(this)
+		);
 	}
 
 	shotButtonEventHandler(event) {
@@ -50,7 +62,10 @@ export class DOM_manager {
 
 	placeShipButtonAddEventListener() {
 		const button = document.getElementById('placeShipButton');
-		button.addEventListener('click', this.placeShipButtonEventHandler.bind(this));
+		button.addEventListener(
+			'click',
+			this.placeShipButtonEventHandler.bind(this)
+		);
 	}
 
 	placeShipButtonEventHandler(event) {
@@ -72,8 +87,8 @@ export class DOM_manager {
 	}
 
 	clickCellEventHandler(row, col) {
-		if (this.shotButtonToggle) alert(`Massive shot at row${row},col${col}`);
-		else alert(`ship placed at row${row},col${col}`);
+		if (this.shotButtonToggle)
+			this.pubsub.publish('shotEvent', { row: row, col: col });
+		else this.pubsub.publish('placementEvent', { row: row, col: col });
 	}
-	//& place ship
 }

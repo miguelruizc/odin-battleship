@@ -1,5 +1,6 @@
 import { Pubsub } from './pubsub.js';
 import { jest } from '@jest/globals';
+import { DOM_manager } from './DOM_manager.js';
 
 describe('Pubsub', () => {
 	test('Pubsub object exists', () => {
@@ -80,5 +81,39 @@ describe('Pubsub', () => {
 		);
 
 		consoleSpy.mockRestore;
+	});
+});
+
+describe('Pubsub/DOM_manager tests', () => {
+	test('DOM_manager publish shotEvent with coordinates to pubsub', () => {
+		const pubsub = new Pubsub();
+		const DOMman = new DOM_manager(pubsub, true);
+		DOMman.shotButtonToggle = true;
+		DOMman.placeShipButtonToggle = false;
+		DOMman.clickCellEventHandler(0, 0);
+
+		expect(pubsub.getEvents()).toEqual([
+			{
+				eventId: 0,
+				eventType: 'shotEvent',
+				eventData: { row: 0, col: 0 },
+			},
+		]);
+	});
+
+	test('DOM_manager publish place ship event with coordinates to pubsub', () => {
+		const pubsub = new Pubsub();
+		const DOMman = new DOM_manager(pubsub, true);
+		DOMman.shotButtonToggle = false;
+		DOMman.placeShipButtonToggle = true;
+		DOMman.clickCellEventHandler(0, 0);
+
+		expect(pubsub.getEvents()).toEqual([
+			{
+				eventId: 0,
+				eventType: 'placementEvent',
+				eventData: { row: 0, col: 0 },
+			},
+		]);
 	});
 });

@@ -21,14 +21,6 @@ pubsub.subscribe(object.testEventHandler, 'testEvent');
 pubsub.publish('testEvent', {});
 pubsub.broadcast();
 
-// TODO: Add a pub/sub object
-// Make DOM_manager generate shot events (publish event)
-// Make DOM_manager generate ship placement events (publish event)
-
 // Make PubSub broadcast shot events
 // Make gameboard know when a shot event happens to trigger reaction (subscribe to shot events)
 // Make gameboard know when a ship placement event happen to trigger reaction (subscribe to placement event)
-
-// PUBSUB.publish(things)
-// PUBSUB.subscribe(things)
-// PUBSUB has a queue of event, for each event, communicate it to relevant subscribers
