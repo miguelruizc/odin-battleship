@@ -5,11 +5,7 @@ export class DOM_manager {
 		if (!testInstance) {
 			this.pubsub = pubsub;
 			this.shotButtonToggle = true;
-			document.getElementById('shotButton').style.backgroundColor =
-				'lightgreen';
 			this.placeShipButtonToggle = false;
-			this.shotButtonAddEventListener();
-			this.placeShipButtonAddEventListener();
 			this.subscribeToPubsub();
 		} else {
 			this.pubsub = pubsub;
@@ -52,36 +48,6 @@ export class DOM_manager {
 		this.addBoardEventListeners(board.length, num);
 	}
 
-	shotButtonAddEventListener() {
-		const button = document.getElementById('shotButton');
-		button.addEventListener(
-			'click',
-			this.shotButtonEventHandler.bind(this)
-		);
-	}
-
-	shotButtonEventHandler(event) {
-		this.shotButtonToggle = true;
-		this.placeShipButtonToggle = false;
-		event.target.style.backgroundColor = 'lightgreen';
-		event.target.nextElementSibling.style.backgroundColor = 'white';
-	}
-
-	placeShipButtonAddEventListener() {
-		const button = document.getElementById('placeShipButton');
-		button.addEventListener(
-			'click',
-			this.placeShipButtonEventHandler.bind(this)
-		);
-	}
-
-	placeShipButtonEventHandler(event) {
-		this.placeShipButtonToggle = true;
-		this.shotButtonToggle = false;
-		event.target.style.backgroundColor = 'lightgreen';
-		event.target.previousElementSibling.style.backgroundColor = 'white';
-	}
-
 	addBoardEventListeners(boardSize, player) {
 		for (let i = 0; i < boardSize; i++) {
 			for (let j = 0; j < boardSize; j++) {
@@ -117,5 +83,10 @@ export class DOM_manager {
 
 	subscribeToBoardUpdateEvents() {
 		this.pubsub.subscribe(this.renderBoard.bind(this), 'boardUpdateEvent');
+	}
+
+	togglePlayer1Placements() {
+		this.shotButtonToggle = false;
+		this.placeShipButtonToggle = true;
 	}
 }
