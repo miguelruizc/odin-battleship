@@ -1,18 +1,12 @@
 import { Pubsub } from './pubsub.js';
 
 export class DOM_manager {
-	constructor(pubsub, testInstance = false) {
-		if (!testInstance) {
-			this.pubsub = pubsub;
-			this.shotButtonToggle = true;
-			this.placeShipButtonToggle = false;
-			this.currentPlayer = 1;
-			this.subscribeToPubsub();
-		} else {
-			this.pubsub = pubsub;
-			this.shotButtonToggle = false;
-			this.placeShipButtonToggle = false;
-		}
+	constructor(pubsub) {
+		this.pubsub = pubsub;
+		this.shotButtonToggle = true;
+		this.placeShipButtonToggle = false;
+		this.currentPlayer = 1;
+		this.subscribeToPubsub();
 	}
 
 	render() {}
@@ -122,5 +116,78 @@ export class DOM_manager {
 	deactivateInput() {
 		this.shotButtonToggle = false;
 		this.placeShipButtonToggle = false;
+	}
+
+	activateShipPreview(shipSize) {
+		this.shipPreview = true;
+		this.shipPreviewSize = shipSize;
+
+		// Set hover event listeners (for this.currentPlayer)
+		this.hoverEventsReferences = this.addHoverEventListeners();
+	}
+
+	deactivateShipPreview() {
+		this.shipPreview = false;
+
+		// Remove hover event listeners
+		this.removeHoverEventListeners();
+	}
+
+	addHoverEventListeners() {
+		// Array to store all handlers to remove event listeners later
+		let handlersReferences = [];
+
+		// Iterate board of current player, addHoverEventListener to each
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				let handler = () => {
+					console.log(
+						`player${this.currentPlayer},row${i},col${j} hovered over`
+					);
+				};
+				handlersReferences.push({
+					handler,
+					player: this.currentPlayer,
+					row: i,
+					col: j,
+				});
+
+				const currentCell = document.getElementById(
+					`player${this.currentPlayer},row${i},col${j}`
+				);
+				currentCell.addEventListener('mouseover', handler);
+			}
+		}
+
+		return handlersReferences;
+	}
+
+	removeHoverEventListeners() {
+		// Iterate board of current player, addHoverEventListener to each
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				const currentCell = document.getElementById(
+					`player${this.currentPlayer},row${i},col${j}`
+				);
+
+				// Get correct function reference
+				let reference = this.hoverEventsReferences.find(
+					(obj) =>
+						obj.row === i &&
+						obj.col === j &&
+						obj.player === this.currentPlayer
+				);
+
+				console.log(
+					'Removing event listener for ' +
+						`player${this.currentPlayer},row${i},col${j}`
+				);
+				console.table(reference);
+				currentCell.removeEventListener('mouseover', reference.handler);
+			}
+		}
+
+		// Reset array with references
+		this.hoverEventReferences = [];
 	}
 }

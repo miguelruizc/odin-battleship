@@ -10,7 +10,8 @@ const DOM = new DOM_manager(pubsub);
 // TO-DO: Implement game loop
 // 0. Start game button initializes game loop
 const startGameButton = document.getElementById('startGameButton');
-startGameButton.addEventListener('click', play);
+// startGameButton.addEventListener('click', play);
+startGameButton.addEventListener('click', testSandboxPlay);
 
 function play() {
 	// SET UP GAME
@@ -25,7 +26,7 @@ function play() {
 
 	// SHIP PLACEMENTS
 	async function shipPlacements(player) {
-		let gameShips = [2]; // each element is a ship of size 'value'
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
@@ -97,7 +98,48 @@ function play() {
 		return 'No winner';
 	}
 
-	function reset() {}
+	gameLoop();
+}
+
+function testSandboxPlay() {
+	// SET UP GAME
+	const player1 = new Player(pubsub, 1);
+	const player2 = new Player(pubsub, 2);
+
+	DOM.renderBoard(player1.getBoard(), 1);
+	DOM.renderBoard(player2.getBoard(), 2);
+
+	//SHIP PLACEMENT PREVIEW TESTS
+	DOM.activateShipPreview(5);
+
+	startGameButton.style.display = 'none'; // Hide startGame button
+	const infoDiv = document.getElementById('gameInfo');
+
+	// SHIP PLACEMENTS
+	async function shipPlacements(player) {
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+
+		for (let ship of gameShips) {
+			helpers.clearTextContent(infoDiv);
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
+
+			DOM.preparePlacement(player, ship);
+
+			await new Promise((resolve) => {
+				const handler = () => {
+					pubsub.unsubscribe(handler, 'shipPlacedEvent');
+					resolve();
+				};
+				pubsub.subscribe(handler, 'shipPlacedEvent');
+			});
+		}
+	}
+
+	// GAME LOOP
+	async function gameLoop() {
+		await shipPlacements(1);
+		await shipPlacements(2);
+	}
 
 	gameLoop();
 }
