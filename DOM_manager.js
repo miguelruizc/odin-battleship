@@ -36,6 +36,14 @@ export class DOM_manager {
 				cell.setAttribute('class', 'boardCell');
 				cell.setAttribute('id', `player${num},row${i},col${j}`);
 				cell.textContent = board[i][j];
+				if (cell.textContent === '0')
+					cell.style.backgroundColor = '#a3e8ff';
+				if (cell.textContent === '1')
+					cell.style.backgroundColor = 'lightgrey';
+				if (cell.textContent === '5')
+					cell.style.backgroundColor = '#ff5252';
+				if (cell.textContent === '9')
+					cell.style.backgroundColor = '#7e86ff';
 
 				// Append cell
 				row.appendChild(cell);
@@ -103,9 +111,11 @@ export class DOM_manager {
 		this.currentPlayer = player;
 		this.shipSize = shipSize;
 		this.shipDirection = 'horizontal';
-		this.shipPlaced = false;
-		alert(
-			`Player ${this.currentPlayer} turn to place ship(${this.shipSize}), ship placed: ${this.shipPlaced}`
-		);
+	}
+
+	prepareTurn(player) {
+		this.shotButtonToggle = true;
+		this.placeShipButtonToggle = false;
+		this.currentPlayer = player === 1 ? 2 : 1;
 	}
 }

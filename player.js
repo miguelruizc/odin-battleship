@@ -15,4 +15,8 @@ export class Player {
 	getBoard() {
 		return this.gameboard.getBoard();
 	}
+
+	isDead() {
+		return this.gameboard.areShipsSunk();
+	}
 }

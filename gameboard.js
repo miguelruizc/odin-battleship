@@ -122,6 +122,7 @@ export class Gameboard {
 			this.board[row][col] = 5;
 
 			this.publishBoardUpdate();
+			this.publishShotTaken(row, col);
 			return true;
 		}
 
@@ -130,6 +131,7 @@ export class Gameboard {
 			this.board[row][col] = 9;
 
 			this.publishBoardUpdate();
+			this.publishShotTaken(row, col);
 			return true;
 		}
 	}
@@ -200,6 +202,15 @@ export class Gameboard {
 		this.pubsub.publish('shipPlacedEvent', {
 			board: this.board,
 			player: this.player,
+		});
+	}
+
+	publishShotTaken(row, col) {
+		this.pubsub.publish('shotTakenEvent', {
+			board: this.board,
+			player: this.player,
+			row: row,
+			col: col,
 		});
 	}
 }
