@@ -57,6 +57,7 @@ export class Gameboard {
 		this.ships.push(ship);
 
 		this.publishBoardUpdate();
+		this.publishShipPlaced();
 		return true;
 	}
 
@@ -193,5 +194,12 @@ export class Gameboard {
 				player: this.player,
 			});
 		}
+	}
+
+	publishShipPlaced() {
+		this.pubsub.publish('shipPlacedEvent', {
+			board: this.board,
+			player: this.player,
+		});
 	}
 }

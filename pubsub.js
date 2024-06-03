@@ -48,6 +48,20 @@ export class Pubsub {
 		this.subscribers.push({ [eventType]: method });
 	}
 
+	unsubscribe(method, eventType) {
+		// Collect indices to remove
+		const indicesToRemove = [];
+		for (let i = 0; i < this.subscribers.length; i++) {
+			if (this.subscribers[i][eventType] === method)
+				indicesToRemove.push(i);
+		}
+
+		// Remove subscribers starting from the end of the array
+		for (let i = indicesToRemove.length - 1; i >= 0; i--) {
+			this.subscribers.splice(indicesToRemove[i], 1);
+		}
+	}
+
 	broadcast() {
 		while (!this.eventQ.isEmpty()) {
 			const event = this.eventQ.dequeue();
@@ -65,10 +79,10 @@ export class Pubsub {
 					// 'placeShip' event: Gameboard.placeShip(ship, row, col, direction)
 					else if (callback.name === 'bound placeShip')
 						callback(
-							new Ship(1),
+							new Ship(event.eventData.shipSize),
 							event.eventData.row,
 							event.eventData.col,
-							'horizontal'
+							event.eventData.shipDirection
 						);
 					// 'boardUpdate' event: DOM_manager.updateBoard
 					else if (callback.name === 'bound renderBoard') {

@@ -20,26 +20,46 @@ function play() {
 	DOM.renderBoard(player2.getBoard(), 2);
 
 	// GAME LOGIC:
-	// startGameButton.style.display = 'none'; // Hide startGame button
+	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 	let isWon = false;
 	let currentPlayer = 1;
 	let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
 
 	// 1. Player 1 places ships
-	gameShips.forEach((ship) => {
-		helpers.clearTextContent(infoDiv);
-		infoDiv.textContent = `Player 1, place ship size(${ship})`;
+	async function shipPlacements(player) {
+		for (let ship of gameShips) {
+			helpers.clearTextContent(infoDiv);
+			infoDiv.textContent = `Player ${player}, place ship size(${ship})`;
 
-		// Wait for the player to click on the board
-		// TODO: Figure out how to wait valid input here, and proceed or keep waiting
+			DOM.preparePlacement(player, ship);
 
-		// Set DOM_manager internals to specify player & board & intention
-	});
-	// 2. Player 2 places ships
-	// 3. Loop until win
-	// -player 1 take turn
-	// -player 2 take turn
-	// -check winner/draw -> if found announce and end game
-	// -> else keep playing
+			await new Promise((resolve) => {
+				const handler = () => {
+					pubsub.unsubscribe(handler, 'shipPlacedEvent');
+					resolve();
+				};
+				pubsub.subscribe(handler, 'shipPlacedEvent');
+			});
+		}
+	}
+
+	async function gameLoop() {
+		await shipPlacements(1);
+		await shipPlacements(2);
+
+		while (!isWon) {
+			takeTurn();
+			console.log('Game won!');
+			isWon = true;
+			// -player 1 take turn
+			// -player 2 take turn
+			// -check winner/draw -> if found announce and end game
+			// -> else keep playing
+		}
+	}
+
+	async function takeTurn() {}
+
+	gameLoop();
 }

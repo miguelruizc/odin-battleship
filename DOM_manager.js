@@ -6,6 +6,7 @@ export class DOM_manager {
 			this.pubsub = pubsub;
 			this.shotButtonToggle = true;
 			this.placeShipButtonToggle = false;
+			this.currentPlayer = 1;
 			this.subscribeToPubsub();
 		} else {
 			this.pubsub = pubsub;
@@ -24,7 +25,7 @@ export class DOM_manager {
 		const boardDiv = document.getElementById(`board${num}`);
 		boardDiv.innerText = '';
 
-		for (let i = 0; i < board.length; i++) {
+		for (let i = board.length - 1; i >= 0; i--) {
 			// Create row
 			const row = document.createElement('div');
 			row.setAttribute('class', 'boardRow');
@@ -62,18 +63,22 @@ export class DOM_manager {
 	}
 
 	clickCellEventHandler(row, col, player) {
-		if (this.shotButtonToggle) {
-			this.pubsub.publish(`shotEvent${player}`, {
-				board: player,
-				row: row,
-				col: col,
-			});
-		} else {
-			this.pubsub.publish(`placementEvent${player}`, {
-				board: player,
-				row: row,
-				col: col,
-			});
+		if (this.currentPlayer === player) {
+			if (this.shotButtonToggle) {
+				this.pubsub.publish(`shotEvent${player}`, {
+					board: player,
+					row: row,
+					col: col,
+				});
+			} else {
+				this.pubsub.publish(`placementEvent${player}`, {
+					board: player,
+					row: row,
+					col: col,
+					shipSize: this.shipSize,
+					shipDirection: this.shipDirection,
+				});
+			}
 		}
 	}
 
@@ -85,8 +90,22 @@ export class DOM_manager {
 		this.pubsub.subscribe(this.renderBoard.bind(this), 'boardUpdateEvent');
 	}
 
-	togglePlayer1Placements() {
+	subscribeToShipPlacedEvents() {
+		this.pubsub.subscribe(() => {
+			this.shipPlaced = true;
+			alert(`ship placed: ${this.shipPlaced}`);
+		}, 'shipPlacedEvent');
+	}
+
+	preparePlacement(player, shipSize) {
 		this.shotButtonToggle = false;
 		this.placeShipButtonToggle = true;
+		this.currentPlayer = player;
+		this.shipSize = shipSize;
+		this.shipDirection = 'horizontal';
+		this.shipPlaced = false;
+		alert(
+			`Player ${this.currentPlayer} turn to place ship(${this.shipSize}), ship placed: ${this.shipPlaced}`
+		);
 	}
 }
