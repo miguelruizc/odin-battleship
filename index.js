@@ -6,8 +6,6 @@ import * as helpers from './helpers.js';
 // Initialize objects
 const pubsub = new Pubsub();
 const DOM = new DOM_manager(pubsub);
-const player1 = new Player(pubsub, 1);
-const player2 = new Player(pubsub, 2);
 
 // TO-DO: Implement game loop
 // 0. Start game button initializes game loop
@@ -16,6 +14,9 @@ startGameButton.addEventListener('click', play);
 
 function play() {
 	// SET UP GAME
+	const player1 = new Player(pubsub, 1);
+	const player2 = new Player(pubsub, 2);
+
 	DOM.renderBoard(player1.getBoard(), 1);
 	DOM.renderBoard(player2.getBoard(), 2);
 
@@ -24,11 +25,11 @@ function play() {
 
 	// SHIP PLACEMENTS
 	async function shipPlacements(player) {
-		let gameShips = [1, 2]; // each element is a ship of size 'value'
+		let gameShips = [2]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
-			infoDiv.textContent = `PLAYER ${player}: PLACE SHIP(${ship})!`;
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
 
 			DOM.preparePlacement(player, ship);
 
@@ -58,12 +59,19 @@ function play() {
 
 		// ANNOUNCE WINNER
 		alert(`WINNER: ${getWinner()}!`);
-		infoDiv.textContent = `WINNER: ${getWinner()}!`;
+		helpers.clearTextContent(infoDiv);
+		infoDiv.prepend(`WINNER: ${getWinner()}!`);
+
+		// Play again setup
+		DOM.deactivateInput();
+		startGameButton.style.display = 'block';
+		startGameButton.textContent = 'Play again';
 	}
 
 	async function takeTurn(player) {
 		DOM.prepareTurn(player);
-		infoDiv.textContent = `PLAYER ${player}: SHOT!`;
+		helpers.clearTextContent(infoDiv);
+		infoDiv.prepend(`PLAYER ${player}: SHOT!`);
 
 		console.log('Starting wait for a shotTakenEvent');
 
@@ -88,8 +96,6 @@ function play() {
 		if (player2.isDead()) return 'Player 1';
 		return 'No winner';
 	}
-
-	function deactivateInput() {}
 
 	function reset() {}
 

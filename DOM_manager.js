@@ -78,7 +78,7 @@ export class DOM_manager {
 					row: row,
 					col: col,
 				});
-			} else {
+			} else if (this.placeShipButtonToggle) {
 				this.pubsub.publish(`placementEvent${player}`, {
 					board: player,
 					row: row,
@@ -117,5 +117,10 @@ export class DOM_manager {
 		this.shotButtonToggle = true;
 		this.placeShipButtonToggle = false;
 		this.currentPlayer = player === 1 ? 2 : 1;
+	}
+
+	deactivateInput() {
+		this.shotButtonToggle = false;
+		this.placeShipButtonToggle = false;
 	}
 }

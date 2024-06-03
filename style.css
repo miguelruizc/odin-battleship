@@ -123,8 +123,14 @@ body {
 
 #gameInfo {
     color: black;
-    height: 20px;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;;
 }
+
