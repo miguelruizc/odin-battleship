@@ -10,8 +10,7 @@ const DOM = new DOM_manager(pubsub);
 // TO-DO: Implement game loop
 // 0. Start game button initializes game loop
 const startGameButton = document.getElementById('startGameButton');
-// startGameButton.addEventListener('click', play);
-startGameButton.addEventListener('click', testSandboxPlay);
+startGameButton.addEventListener('click', play);
 
 function play() {
 	// SET UP GAME
@@ -33,6 +32,7 @@ function play() {
 			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
 
 			DOM.preparePlacement(player, ship);
+			DOM.activateShipPreview(ship);
 
 			await new Promise((resolve) => {
 				const handler = () => {
@@ -41,6 +41,8 @@ function play() {
 				};
 				pubsub.subscribe(handler, 'shipPlacedEvent');
 			});
+
+			DOM.deactivateShipPreview();
 		}
 	}
 
@@ -96,49 +98,6 @@ function play() {
 		if (player1.isDead()) return 'Player 2';
 		if (player2.isDead()) return 'Player 1';
 		return 'No winner';
-	}
-
-	gameLoop();
-}
-
-function testSandboxPlay() {
-	// SET UP GAME
-	const player1 = new Player(pubsub, 1);
-	const player2 = new Player(pubsub, 2);
-
-	DOM.renderBoard(player1.getBoard(), 1);
-	DOM.renderBoard(player2.getBoard(), 2);
-
-	startGameButton.style.display = 'none'; // Hide startGame button
-	const infoDiv = document.getElementById('gameInfo');
-
-	// SHIP PLACEMENTS
-	async function shipPlacements(player) {
-		let gameShips = [2, 3, 4, 5, 6, 7, 8]; // each element is a ship of size 'value'
-
-		for (let ship of gameShips) {
-			helpers.clearTextContent(infoDiv);
-			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
-
-			DOM.preparePlacement(player, ship);
-			DOM.activateShipPreview(ship);
-
-			await new Promise((resolve) => {
-				const handler = () => {
-					pubsub.unsubscribe(handler, 'shipPlacedEvent');
-					resolve();
-				};
-				pubsub.subscribe(handler, 'shipPlacedEvent');
-			});
-
-			DOM.deactivateShipPreview();
-		}
-	}
-
-	// GAME LOOP
-	async function gameLoop() {
-		await shipPlacements(1);
-		await shipPlacements(2);
 	}
 
 	gameLoop();
