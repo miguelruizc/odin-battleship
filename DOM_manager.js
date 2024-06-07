@@ -1,4 +1,5 @@
 import { Pubsub } from './pubsub.js';
+import { findShipCells } from './helpers.js';
 
 export class DOM_manager {
 	constructor(pubsub) {
@@ -123,7 +124,7 @@ export class DOM_manager {
 		this.shipPreviewSize = shipSize;
 
 		// Set hover event listeners (for this.currentPlayer)
-		this.hoverEventsReferences = this.addHoverEventListeners();
+		this.addHoverEventListeners();
 	}
 
 	deactivateShipPreview() {
@@ -141,9 +142,69 @@ export class DOM_manager {
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
 				let handler = () => {
-					console.log(
-						`player${this.currentPlayer},row${i},col${j} hovered over`
+					//SHIP PLACEMENT PREVIEW LOGIC
+					// -given the current cell being hovered, find the other cells that the ship reaches
+					let cells = findShipCells(
+						i,
+						j,
+						this.shipPreviewSize,
+						'horizontal'
 					);
+
+					// -Style positions
+					cells.forEach((cell) => {
+						// IF not out of bounds
+						if (
+							cell.row > -1 &&
+							cell.row < 10 &&
+							cell.col > -1 &&
+							cell.col < 10
+						) {
+							let cellElement = document.getElementById(
+								`player${this.currentPlayer},row${cell.row},col${cell.col}`
+							);
+							cellElement.style.boxShadow =
+								'inset 0 0 0 1px orange';
+						}
+					});
+
+					// Add mouseout event listener to reset styles
+					let element = document.getElementById(
+						`player${this.currentPlayer},row${i},col${j}`
+					);
+
+					let mouseOutHandler = () => {
+						// -given the current cell being hovered, find the other cells that the ship reaches
+						let cells = findShipCells(
+							i,
+							j,
+							this.shipPreviewSize,
+							'horizontal'
+						);
+
+						// -Style positions
+						cells.forEach((cell) => {
+							// IF not out of bounds
+							if (
+								cell.row > -1 &&
+								cell.row < 10 &&
+								cell.col > -1 &&
+								cell.col < 10
+							) {
+								let cellElement = document.getElementById(
+									`player${this.currentPlayer},row${cell.row},col${cell.col}`
+								);
+								cellElement.style.boxShadow = '';
+							}
+						});
+
+						element.removeEventListener(
+							'mouseout',
+							mouseOutHandler
+						);
+					};
+
+					element.addEventListener('mouseout', mouseOutHandler);
 				};
 				handlersReferences.push({
 					handler,
@@ -159,7 +220,7 @@ export class DOM_manager {
 			}
 		}
 
-		return handlersReferences;
+		this.hoverEventReferences = handlersReferences;
 	}
 
 	removeHoverEventListeners() {
