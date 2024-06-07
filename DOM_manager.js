@@ -8,6 +8,13 @@ export class DOM_manager {
 		this.placeShipButtonToggle = false;
 		this.currentPlayer = 1;
 		this.subscribeToPubsub();
+
+		this.cursorX = 0;
+		this.cursorY = 0;
+		document.addEventListener('mousemove', (event) => {
+			this.cursorX = event.clientX;
+			this.cursorY = event.clientY;
+		});
 	}
 
 	render() {}
@@ -31,14 +38,10 @@ export class DOM_manager {
 				cell.setAttribute('class', 'boardCell');
 				cell.setAttribute('id', `player${num},row${i},col${j}`);
 				cell.textContent = board[i][j];
-				if (cell.textContent === '0')
-					cell.style.backgroundColor = '#a3e8ff';
-				if (cell.textContent === '1')
-					cell.style.backgroundColor = 'lightgrey';
-				if (cell.textContent === '5')
-					cell.style.backgroundColor = '#ff5252';
-				if (cell.textContent === '9')
-					cell.style.backgroundColor = '#7e86ff';
+				if (cell.textContent === '0') cell.style.backgroundColor = '#a3e8ff';
+				if (cell.textContent === '1') cell.style.backgroundColor = 'lightgrey';
+				if (cell.textContent === '5') cell.style.backgroundColor = '#ff5252';
+				if (cell.textContent === '9') cell.style.backgroundColor = '#7e86ff';
 
 				// Append cell
 				row.appendChild(cell);
@@ -55,9 +58,7 @@ export class DOM_manager {
 	addBoardEventListeners(boardSize, player) {
 		for (let i = 0; i < boardSize; i++) {
 			for (let j = 0; j < boardSize; j++) {
-				const element = document.getElementById(
-					`player${player},row${i},col${j}`
-				);
+				const element = document.getElementById(`player${player},row${i},col${j}`);
 				element.addEventListener('click', () => {
 					this.clickCellEventHandler(i, j, player);
 				});
@@ -106,6 +107,34 @@ export class DOM_manager {
 		this.currentPlayer = player;
 		this.shipSize = shipSize;
 		this.shipDirection = 'horizontal';
+
+		this.rotateHandler = () => {
+			// Change direction
+			this.shipDirection = this.shipDirection === 'horizontal' ? 'vertical' : 'horizontal';
+
+			console.log('ship direction: ' + this.shipDirection);
+
+			// Clear board of preview styles
+			for (let i = 0; i < 10; i++) {
+				for (let j = 0; j < 10; j++) {
+					let cell = document.getElementById(
+						`player${this.currentPlayer},row${i},col${j}`
+					);
+					cell.style.boxShadow = '';
+				}
+			}
+
+			// Show preview with new direction (trigger hover event)
+			const element = document.elementFromPoint(this.cursorX, this.cursorY);
+			const hoverEvent = new MouseEvent('mouseover', {
+				bubbles: true,
+				cancelable: true,
+				view: window,
+			});
+			element.dispatchEvent(hoverEvent);
+		};
+
+		document.addEventListener('keypress', this.rotateHandler);
 	}
 
 	prepareTurn(player) {
@@ -132,6 +161,7 @@ export class DOM_manager {
 
 		// Remove hover event listeners
 		this.removeHoverEventListeners();
+		document.removeEventListener('keypress', this.rotateHandler);
 	}
 
 	addHoverEventListeners() {
@@ -144,27 +174,16 @@ export class DOM_manager {
 				let handler = () => {
 					//SHIP PLACEMENT PREVIEW LOGIC
 					// -given the current cell being hovered, find the other cells that the ship reaches
-					let cells = findShipCells(
-						i,
-						j,
-						this.shipPreviewSize,
-						'horizontal'
-					);
+					let cells = findShipCells(i, j, this.shipPreviewSize, this.shipDirection);
 
 					// -Style positions
 					cells.forEach((cell) => {
 						// IF not out of bounds
-						if (
-							cell.row > -1 &&
-							cell.row < 10 &&
-							cell.col > -1 &&
-							cell.col < 10
-						) {
+						if (cell.row > -1 && cell.row < 10 && cell.col > -1 && cell.col < 10) {
 							let cellElement = document.getElementById(
 								`player${this.currentPlayer},row${cell.row},col${cell.col}`
 							);
-							cellElement.style.boxShadow =
-								'inset 0 0 0 1px orange';
+							cellElement.style.boxShadow = 'inset 0 0 0 1px orange';
 						}
 					});
 
@@ -175,22 +194,12 @@ export class DOM_manager {
 
 					let mouseOutHandler = () => {
 						// -given the current cell being hovered, find the other cells that the ship reaches
-						let cells = findShipCells(
-							i,
-							j,
-							this.shipPreviewSize,
-							'horizontal'
-						);
+						let cells = findShipCells(i, j, this.shipPreviewSize, this.shipDirection);
 
 						// -Style positions
 						cells.forEach((cell) => {
 							// IF not out of bounds
-							if (
-								cell.row > -1 &&
-								cell.row < 10 &&
-								cell.col > -1 &&
-								cell.col < 10
-							) {
+							if (cell.row > -1 && cell.row < 10 && cell.col > -1 && cell.col < 10) {
 								let cellElement = document.getElementById(
 									`player${this.currentPlayer},row${cell.row},col${cell.col}`
 								);
@@ -198,10 +207,7 @@ export class DOM_manager {
 							}
 						});
 
-						element.removeEventListener(
-							'mouseout',
-							mouseOutHandler
-						);
+						element.removeEventListener('mouseout', mouseOutHandler);
 					};
 
 					element.addEventListener('mouseout', mouseOutHandler);
@@ -232,18 +238,10 @@ export class DOM_manager {
 				);
 
 				// Get correct function reference
-				let reference = this.hoverEventsReferences.find(
-					(obj) =>
-						obj.row === i &&
-						obj.col === j &&
-						obj.player === this.currentPlayer
+				let reference = this.hoverEventReferences.find(
+					(obj) => obj.row === i && obj.col === j && obj.player === this.currentPlayer
 				);
 
-				console.log(
-					'Removing event listener for ' +
-						`player${this.currentPlayer},row${i},col${j}`
-				);
-				console.table(reference);
 				currentCell.removeEventListener('mouseover', reference.handler);
 			}
 		}

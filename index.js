@@ -109,21 +109,19 @@ function testSandboxPlay() {
 	DOM.renderBoard(player1.getBoard(), 1);
 	DOM.renderBoard(player2.getBoard(), 2);
 
-	//SHIP PLACEMENT PREVIEW TESTS
-	DOM.activateShipPreview(5);
-
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 
 	// SHIP PLACEMENTS
 	async function shipPlacements(player) {
-		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+		let gameShips = [2, 3, 4, 5, 6, 7, 8]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
 			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
 
 			DOM.preparePlacement(player, ship);
+			DOM.activateShipPreview(ship);
 
 			await new Promise((resolve) => {
 				const handler = () => {
@@ -132,6 +130,8 @@ function testSandboxPlay() {
 				};
 				pubsub.subscribe(handler, 'shipPlacedEvent');
 			});
+
+			DOM.deactivateShipPreview();
 		}
 	}
 
