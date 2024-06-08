@@ -124,7 +124,6 @@ body {
     outline: 1px solid white;
     background-color: red;
     color: red;
-
 }
 
 #gameInfo {
@@ -158,3 +157,20 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+button {
+    background-color: #fff;
+    border: 1px solid rgb(219, 219, 219);
+}
+
+button:hover {
+    background-color: rgb(34, 35, 79);
+    color: white;
+}
+
+button:active {
+    color:rgb(34, 35, 79);
+    border: 2px solid white;
+}
+
+
