@@ -21,6 +21,8 @@ function play() {
 	DOM.renderBoard(player1.getBoard(), 1);
 	DOM.renderBoard(player2.getBoard(), 2);
 
+	DOM.hideBoard(2);
+
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 
@@ -28,9 +30,7 @@ function play() {
 	async function gameLoop() {
 		await shipPlacements(1);
 		await botShipPlacements(2);
-
 		let currentPlayer = 1;
-
 		while (!checkWinner()) {
 			// Take a turn
 			if (currentPlayer === 1) {
@@ -39,16 +39,13 @@ function play() {
 			if (currentPlayer === 2) {
 				await takeBotTurn(currentPlayer);
 			}
-
 			// Switch player
 			currentPlayer = currentPlayer === 1 ? 2 : 1;
 		}
-
 		// ANNOUNCE WINNER
 		alert(`WINNER: ${getWinner()}!`);
 		helpers.clearTextContent(infoDiv);
 		infoDiv.prepend(`WINNER: ${getWinner()}!`);
-
 		// Play again setup
 		DOM.deactivateInput();
 		startGameButton.style.display = 'block';
@@ -133,7 +130,7 @@ function play() {
 			let randomCol = Math.floor(Math.random() * 10);
 
 			// Shot, if done === true, shot was valid
-			await helpers.delay(1);
+			await helpers.delay(50);
 			if (player === 1) {
 				done = player2.gameboard.takeShot(randomRow, randomCol);
 			} else if (player === 2) {

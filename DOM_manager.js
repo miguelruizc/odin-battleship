@@ -15,6 +15,9 @@ export class DOM_manager {
 			this.cursorX = event.clientX;
 			this.cursorY = event.clientY;
 		});
+
+		this.board1Fog = false;
+		this.board2Fog = false;
 	}
 
 	render() {}
@@ -35,11 +38,23 @@ export class DOM_manager {
 			for (let j = 0; j < board[i].length; j++) {
 				// Create cell
 				const cell = document.createElement('div');
-				cell.setAttribute('class', 'boardCell');
+				cell.classList.add('boardCell');
 				cell.setAttribute('id', `player${num},row${i},col${j}`);
 				cell.textContent = board[i][j];
-				if (cell.textContent === '0') cell.style.backgroundColor = '#a3e8ff';
-				if (cell.textContent === '1') cell.style.backgroundColor = 'lightgrey';
+
+				// Hide if BOARD FOG is active
+				if ((num === 1 && this.board1Fog) || (num === 2 && this.board2Fog)) {
+					cell.classList.add('undiscovered');
+					if (cell.textContent !== '5' && cell.textContent !== '9') {
+						cell.style.backgroundColor = '#323232';
+						cell.style.color = '#323232';
+						cell.style.outline = '1px solid #525252';
+					}
+				} else {
+					if (cell.textContent === '0') cell.style.backgroundColor = '#a3e8ff';
+					if (cell.textContent === '1') cell.style.backgroundColor = 'lightgrey';
+				}
+
 				if (cell.textContent === '5') cell.style.backgroundColor = '#ff5252';
 				if (cell.textContent === '9') cell.style.backgroundColor = '#7e86ff';
 
@@ -246,5 +261,21 @@ export class DOM_manager {
 
 		// Reset array with references
 		this.hoverEventReferences = [];
+	}
+
+	hideBoard(player) {
+		if (player === 1) this.board1Fog = true;
+		if (player === 2) this.board2Fog = true;
+
+		// Iterate over cells
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				const element = document.getElementById(`player${player},row${i},col${j}`);
+				element.classList.add('undiscovered');
+				element.style.backgroundColor = '#323232';
+				element.style.color = '#323232';
+				element.style.outline = '1px solid #525252';
+			}
+		}
 	}
 }
