@@ -48,15 +48,31 @@ export class DOM_manager {
 					if (cell.textContent !== '5' && cell.textContent !== '9') {
 						cell.style.backgroundColor = '#323232';
 						cell.style.color = '#323232';
-						cell.style.outline = '1px solid #525252';
+						cell.style.outline = '1px solid #aaaaaa30';
 					}
 				} else {
-					if (cell.textContent === '0') cell.style.backgroundColor = '#a3e8ff';
-					if (cell.textContent === '1') cell.style.backgroundColor = 'lightgrey';
+					if (cell.textContent === '0') {
+						cell.style.backgroundColor = '#a3e8ff';
+						cell.style.color = '#a3e8ff';
+						cell.style.outline = '1px solid #aaaaaa30';
+					}
+					if (cell.textContent === '1') {
+						cell.style.backgroundColor = 'lightgrey';
+						cell.style.color = 'lightgrey';
+						cell.style.outline = '1px solid #aaaaaa30';
+					}
 				}
 
-				if (cell.textContent === '5') cell.style.backgroundColor = '#ff5252';
-				if (cell.textContent === '9') cell.style.backgroundColor = '#7e86ff';
+				if (cell.textContent === '5') {
+					cell.style.backgroundColor = '#ff5252';
+					cell.style.color = '#ff5252';
+					cell.style.outline = '1px solid #aaaaaa30';
+				}
+				if (cell.textContent === '9') {
+					cell.style.backgroundColor = '#7e86ff';
+					cell.style.color = '#7e86ff';
+					cell.style.outline = '1px solid #aaaaaa30';
+				}
 
 				// Append cell
 				row.appendChild(cell);
@@ -274,7 +290,7 @@ export class DOM_manager {
 				element.classList.add('undiscovered');
 				element.style.backgroundColor = '#323232';
 				element.style.color = '#323232';
-				element.style.outline = '1px solid #525252';
+				element.style.outline = '1px solid #aaaaaa30';
 			}
 		}
 	}

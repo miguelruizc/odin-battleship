@@ -54,7 +54,7 @@ function play() {
 
 	// SHIP PLACEMENTS
 	async function botShipPlacements(player) {
-		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+		let gameShips = [1, 2]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
@@ -82,7 +82,7 @@ function play() {
 	}
 
 	async function shipPlacements(player) {
-		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+		let gameShips = [1, 2]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
