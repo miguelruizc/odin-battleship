@@ -48,8 +48,8 @@ export class DOM_manager {
 				if ((num === 1 && this.board1Fog) || (num === 2 && this.board2Fog)) {
 					cell.classList.add('undiscovered');
 					if (cell.textContent !== '5' && cell.textContent !== '9') {
-						cell.style.backgroundColor = '#323232';
-						cell.style.color = '#323232';
+						cell.style.backgroundColor = '#a3e8ff';
+						cell.style.color = '#a3e8ff';
 						cell.style.outline = '1px solid #aaaaaa30';
 					}
 				} else {
@@ -289,8 +289,8 @@ export class DOM_manager {
 			for (let j = 0; j < 10; j++) {
 				const element = document.getElementById(`player${player},row${i},col${j}`);
 				element.classList.add('undiscovered');
-				element.style.backgroundColor = '#323232';
-				element.style.color = '#323232';
+				element.style.backgroundColor = '#a3e8ff';
+				element.style.color = '#a3e8ff';
 				element.style.outline = '1px solid #aaaaaa30';
 			}
 		}
