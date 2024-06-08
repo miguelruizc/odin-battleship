@@ -49,13 +49,9 @@ function play() {
 		infoDiv.prepend(`WINNER: ${getWinner()}!`);
 		if (getWinner() === 'Player 1') {
 			infoDiv.style.border = '2px solid #67ff83';
-			// infoDiv.style.backgroundColor = '#67ff83';
-			// infoDiv.style.color = 'black';
 		}
 		if (getWinner() === 'Player 2') {
 			infoDiv.style.border = '2px solid #fbff7e';
-			// infoDiv.style.backgroundColor = '#fbff7e';
-			// infoDiv.style.color = 'black';
 		}
 
 		// Play again setup
