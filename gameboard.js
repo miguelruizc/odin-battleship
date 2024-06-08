@@ -107,7 +107,7 @@ export class Gameboard {
 			let row = shipCoords[i].row;
 			let col = shipCoords[i].col;
 
-			// 8 Surrounding (if: outofbounds == free, if not, check position)
+			// 8 Surrounding (if: out of bounds == free, if not, check position)
 			// 1, 2, 3
 			// 4, *, 5
 			// 6, 7, 8
@@ -146,7 +146,6 @@ export class Gameboard {
 				if (this.board[adj8.row][adj8.col] !== 0) free = false;
 			}
 		}
-		console.log(`Checked adjacent free: ${free}`);
 
 		return free;
 	}

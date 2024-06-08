@@ -21,7 +21,7 @@ function play() {
 	DOM.renderBoard(player1.getBoard(), 1);
 	DOM.renderBoard(player2.getBoard(), 2);
 
-	DOM.hideBoard(2);
+	// DOM.hideBoard(2);
 
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
@@ -70,7 +70,7 @@ function play() {
 			for (let i = 0; i < ship; i++) shipAsci += '■';
 			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${shipAsci})!`);
 
-			DOM.preparePlacement(player, ship);
+			DOM.preparePlacement(player, ship, true);
 
 			await helpers.delay(500);
 

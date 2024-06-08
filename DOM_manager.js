@@ -133,7 +133,7 @@ export class DOM_manager {
 		}, 'shipPlacedEvent');
 	}
 
-	preparePlacement(player, shipSize) {
+	preparePlacement(player, shipSize, bot = false) {
 		this.shotButtonToggle = false;
 		this.placeShipButtonToggle = true;
 		this.currentPlayer = player;
@@ -167,7 +167,10 @@ export class DOM_manager {
 			element.dispatchEvent(hoverEvent);
 		};
 
-		document.addEventListener('wheel', this.rotateHandler);
+		if (!bot) {
+			document.addEventListener('wheel', this.rotateHandler);
+			console.log('add wheel listener');
+		}
 	}
 
 	prepareTurn(player) {
@@ -220,7 +223,9 @@ export class DOM_manager {
 
 		// Remove hover event listeners
 		this.removeHoverEventListeners();
+
 		document.removeEventListener('wheel', this.rotateHandler);
+		console.log('remove wheel listener');
 	}
 
 	addHoverEventListeners() {
