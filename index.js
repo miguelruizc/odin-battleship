@@ -1,6 +1,7 @@
 import { DOM_manager } from './DOM_manager.js';
 import { Player } from './player.js';
 import { Pubsub } from './pubsub.js';
+import { Ship } from './ship.js';
 import * as helpers from './helpers.js';
 
 // Initialize objects
@@ -23,33 +24,10 @@ function play() {
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 
-	// SHIP PLACEMENTS
-	async function shipPlacements(player) {
-		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
-
-		for (let ship of gameShips) {
-			helpers.clearTextContent(infoDiv);
-			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
-
-			DOM.preparePlacement(player, ship);
-			DOM.activateShipPreview(ship);
-
-			await new Promise((resolve) => {
-				const handler = () => {
-					pubsub.unsubscribe(handler, 'shipPlacedEvent');
-					resolve();
-				};
-				pubsub.subscribe(handler, 'shipPlacedEvent');
-			});
-
-			DOM.deactivateShipPreview();
-		}
-	}
-
 	// GAME LOOP
 	async function gameLoop() {
 		await shipPlacements(1);
-		await shipPlacements(2);
+		await botShipPlacements(2);
 
 		let currentPlayer = 1;
 
@@ -75,6 +53,57 @@ function play() {
 		DOM.deactivateInput();
 		startGameButton.style.display = 'block';
 		startGameButton.textContent = 'Play again';
+	}
+
+	// SHIP PLACEMENTS
+	async function botShipPlacements(player) {
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+
+		for (let ship of gameShips) {
+			helpers.clearTextContent(infoDiv);
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
+
+			DOM.preparePlacement(player, ship);
+
+			await helpers.delay(500);
+
+			let placed = false;
+			while (!placed) {
+				// Generate random direction
+				const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+				// Generate random position
+				const row = Math.floor(Math.random() * 10);
+				const col = Math.floor(Math.random() * 10);
+
+				// Try to place the thing
+				if (player === 1)
+					placed = player1.gameboard.placeShip(new Ship(ship), row, col, direction);
+				if (player === 2)
+					placed = player2.gameboard.placeShip(new Ship(ship), row, col, direction);
+			}
+		}
+	}
+
+	async function shipPlacements(player) {
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
+
+		for (let ship of gameShips) {
+			helpers.clearTextContent(infoDiv);
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
+
+			DOM.preparePlacement(player, ship);
+			DOM.activateShipPreview(ship);
+
+			await new Promise((resolve) => {
+				const handler = () => {
+					pubsub.unsubscribe(handler, 'shipPlacedEvent');
+					resolve();
+				};
+				pubsub.subscribe(handler, 'shipPlacedEvent');
+			});
+
+			DOM.deactivateShipPreview();
+		}
 	}
 
 	async function takeTurn(player) {
