@@ -313,6 +313,12 @@ export class DOM_manager {
 	}
 
 	hideBoard(player) {
+		if (player === 'none') {
+			this.board1Fog = false;
+			this.board2Fog = false;
+			return;
+		}
+
 		if (player === 1) this.board1Fog = true;
 		if (player === 2) this.board2Fog = true;
 

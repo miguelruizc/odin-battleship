@@ -21,8 +21,6 @@ async function play() {
 	DOM.renderBoard(player1.getBoard(), 1);
 	DOM.renderBoard(player2.getBoard(), 2);
 
-	// DOM.hideBoard(2);
-
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 	helpers.clearTextContent(infoDiv);
@@ -32,6 +30,8 @@ async function play() {
 	let difficulty = 1;
 
 	if (mode.player1 === 'human') difficulty = await choseDifficulty();
+	if (mode.player1 === 'human') DOM.hideBoard(2);
+	else DOM.hideBoard('none');
 
 	gameLoop(mode.player1, mode.player2);
 
