@@ -20,3 +20,7 @@ export function findShipCells(initialRow, initialCol, shipSize, direction) {
 
 	return array;
 }
+
+export function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

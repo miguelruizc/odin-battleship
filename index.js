@@ -55,7 +55,13 @@ function play() {
 
 		while (!checkWinner()) {
 			// Take a turn
-			await takeTurn(currentPlayer);
+			if (currentPlayer === 1) {
+				await takeTurn(currentPlayer);
+			}
+			if (currentPlayer === 2) {
+				await takeBotTurn(currentPlayer);
+			}
+
 			// Switch player
 			currentPlayer = currentPlayer === 1 ? 2 : 1;
 		}
@@ -86,6 +92,30 @@ function play() {
 			};
 			pubsub.subscribe(handler, 'shotTakenEvent');
 		});
+	}
+
+	async function takeBotTurn(player) {
+		DOM.prepareTurn(player);
+		helpers.clearTextContent(infoDiv);
+		infoDiv.prepend(`PLAYER ${player}: SHOT!`);
+
+		let done = false;
+		//Choose a random row & col, until is valid
+		do {
+			// Generate random 0-9
+			let randomRow = Math.floor(Math.random() * 10);
+			let randomCol = Math.floor(Math.random() * 10);
+
+			// Shot, if done === true, shot was valid
+			if (player === 1) {
+				done = player2.gameboard.takeShot(randomRow, randomCol);
+				break;
+			}
+			if (player === 2) {
+				done = player1.gameboard.takeShot(randomRow, randomCol);
+				break;
+			}
+		} while (!done);
 	}
 
 	function checkWinner() {

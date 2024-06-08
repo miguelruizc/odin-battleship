@@ -32,7 +32,7 @@ body {
 #xAxis1 div {flex: 1}
 
 /* Board */
-#board1 { grid-area: 1 / 2 / 11 / 12; background-color: #ffcc5d;}
+#board1 { grid-area: 1 / 2 / 11 / 12; background-color: #a3e8ff;}
 
 /*END GRID LAYOUT*/
 #xAxis1 {
@@ -65,7 +65,7 @@ body {
 #xAxis2 div {flex: 1}
 
 /* Board */
-#board2 { grid-area: 1 / 2 / 11 / 12; background-color: #ffcc5d;}
+#board2 { grid-area: 1 / 2 / 11 / 12; background-color:#a3e8ff;}
 
 /*END GRID LAYOUT*/
 #xAxis2 {
