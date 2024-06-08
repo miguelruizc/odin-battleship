@@ -45,7 +45,6 @@ function play() {
 			currentPlayer = currentPlayer === 1 ? 2 : 1;
 		}
 		// ANNOUNCE WINNER
-		alert(`WINNER: ${getWinner()}!`);
 		helpers.clearTextContent(infoDiv);
 		infoDiv.prepend(`WINNER: ${getWinner()}!`);
 		if (getWinner() === 'Player 1') {
@@ -63,11 +62,13 @@ function play() {
 
 	// SHIP PLACEMENTS
 	async function botShipPlacements(player) {
-		let gameShips = [1, 2]; // each element is a ship of size 'value'
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
-			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
+			let shipAsci = '';
+			for (let i = 0; i < ship; i++) shipAsci += '■';
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${shipAsci})!`);
 
 			DOM.preparePlacement(player, ship);
 
@@ -91,7 +92,7 @@ function play() {
 	}
 
 	async function shipPlacements(player) {
-		let gameShips = [1, 2]; // each element is a ship of size 'value'
+		let gameShips = [1, 2, 3, 4, 5]; // each element is a ship of size 'value'
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);

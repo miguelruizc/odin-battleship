@@ -128,7 +128,6 @@ export class DOM_manager {
 	subscribeToShipPlacedEvents() {
 		this.pubsub.subscribe(() => {
 			this.shipPlaced = true;
-			alert(`ship placed: ${this.shipPlaced}`);
 		}, 'shipPlacedEvent');
 	}
 

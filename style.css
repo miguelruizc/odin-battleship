@@ -133,10 +133,15 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 20px;
-    border: 1px solid grey;
+    border: 1px solid rgb(219, 219, 219);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;;
+    align-items: center;
+    gap: 5px;
+}
+
+#gameInfo button {
+    padding: 2px 5px;
 }
 
