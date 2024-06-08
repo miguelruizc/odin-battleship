@@ -13,7 +13,7 @@ const DOM = new DOM_manager(pubsub);
 const startGameButton = document.getElementById('startGameButton');
 startGameButton.addEventListener('click', play);
 
-function play() {
+async function play() {
 	// SET UP GAME
 	const player1 = new Player(pubsub, 1);
 	const player2 = new Player(pubsub, 2);
@@ -28,18 +28,35 @@ function play() {
 	helpers.clearTextContent(infoDiv);
 	DOM.resetGameInfoDiv();
 
+	let mode = await choseGameMode();
+	let difficulty = 1;
+
+	if (mode.player1 === 'human') difficulty = await choseDifficulty();
+
+	console.log(mode);
+	console.log('Difficulty: ' + difficulty);
+
+	gameLoop(mode.player1, mode.player2);
+
 	// GAME LOOP
-	async function gameLoop() {
-		await shipPlacements(1);
-		await botShipPlacements(2);
+	async function gameLoop(player1 = 'bot', player2 = 'bot') {
+		// Player 1 Ship placements
+		if (player1 === 'human') await shipPlacements(1);
+		if (player1 === 'bot') await botShipPlacements(1);
+		// Player 2 Ship placements
+		if (player2 === 'human') await shipPlacements(2);
+		if (player2 === 'bot') await botShipPlacements(2);
+
 		let currentPlayer = 1;
 		while (!checkWinner()) {
 			// Take a turn
 			if (currentPlayer === 1) {
-				await takeTurn(currentPlayer);
+				if (player1 === 'human') await takeTurn(currentPlayer);
+				if (player1 === 'bot') await takeBotTurn(currentPlayer);
 			}
 			if (currentPlayer === 2) {
-				await takeBotTurn(currentPlayer);
+				if (player2 === 'human') await takeTurn(currentPlayer);
+				if (player2 === 'bot') await takeBotTurn(currentPlayer);
 			}
 			// Switch player
 			currentPlayer = currentPlayer === 1 ? 2 : 1;
@@ -58,6 +75,145 @@ function play() {
 		DOM.deactivateInput();
 		startGameButton.style.display = 'block';
 		startGameButton.textContent = 'Play again';
+	}
+
+	async function choseGameMode() {
+		helpers.clearTextContent(infoDiv);
+
+		const botVsBotButton = document.createElement('button');
+		botVsBotButton.textContent = 'Bot vs Bot';
+
+		const humanVsBotButton = document.createElement('button');
+		humanVsBotButton.textContent = 'Human vs Bot';
+
+		const promise = new Promise((resolve) => {
+			const handler1 = () => {
+				console.log('bot vs bot button clicked');
+				botVsBotButton.removeEventListener('click', handler1);
+				humanVsBotButton.removeEventListener('click', handler2);
+				infoDiv.removeChild(botVsBotButton);
+				infoDiv.removeChild(humanVsBotButton);
+				resolve({ player1: 'bot', player2: 'bot' });
+			};
+
+			const handler2 = () => {
+				console.log('human vs bot button clicked');
+				humanVsBotButton.removeEventListener('click', handler2);
+				botVsBotButton.removeEventListener('click', handler1);
+				infoDiv.removeChild(botVsBotButton);
+				infoDiv.removeChild(humanVsBotButton);
+				resolve({ player1: 'human', player2: 'bot' });
+			};
+
+			botVsBotButton.addEventListener('click', handler1);
+			humanVsBotButton.addEventListener('click', handler2);
+		});
+
+		infoDiv.appendChild(botVsBotButton);
+		infoDiv.appendChild(humanVsBotButton);
+
+		return promise;
+	}
+
+	async function choseDifficulty() {
+		helpers.clearTextContent(infoDiv);
+
+		const text = document.createElement('p');
+		text.textContent = 'Chose difficulty:';
+
+		const diff1 = document.createElement('button');
+		diff1.textContent = '1';
+		const diff2 = document.createElement('button');
+		diff2.textContent = '2';
+		const diff3 = document.createElement('button');
+		diff3.textContent = '3';
+		const diff4 = document.createElement('button');
+		diff4.textContent = '4';
+		const diff5 = document.createElement('button');
+		diff5.textContent = '5';
+
+		const promise = new Promise((resolve) => {
+			const handler1 = () => {
+				console.log('diff 1 clicked');
+				diff1.removeEventListener('click', handler1);
+				diff2.removeEventListener('click', handler2);
+				diff3.removeEventListener('click', handler3);
+				diff4.removeEventListener('click', handler4);
+				diff5.removeEventListener('click', handler5);
+				infoDiv.removeChild(difficulties);
+				infoDiv.removeChild(text);
+				resolve(1);
+			};
+
+			const handler2 = () => {
+				console.log('diff 2 clicked');
+				diff1.removeEventListener('click', handler1);
+				diff2.removeEventListener('click', handler2);
+				diff3.removeEventListener('click', handler3);
+				diff4.removeEventListener('click', handler4);
+				diff5.removeEventListener('click', handler5);
+				infoDiv.removeChild(difficulties);
+				infoDiv.removeChild(text);
+				resolve(2);
+			};
+
+			const handler3 = () => {
+				console.log('diff 3 clicked');
+				diff1.removeEventListener('click', handler1);
+				diff2.removeEventListener('click', handler2);
+				diff3.removeEventListener('click', handler3);
+				diff4.removeEventListener('click', handler4);
+				diff5.removeEventListener('click', handler5);
+				infoDiv.removeChild(difficulties);
+				infoDiv.removeChild(text);
+				resolve(3);
+			};
+
+			const handler4 = () => {
+				console.log('diff 4 clicked');
+				diff1.removeEventListener('click', handler1);
+				diff2.removeEventListener('click', handler2);
+				diff3.removeEventListener('click', handler3);
+				diff4.removeEventListener('click', handler4);
+				diff5.removeEventListener('click', handler5);
+				infoDiv.removeChild(difficulties);
+				infoDiv.removeChild(text);
+				resolve(4);
+			};
+
+			const handler5 = () => {
+				console.log('diff 5 clicked');
+				diff1.removeEventListener('click', handler1);
+				diff2.removeEventListener('click', handler2);
+				diff3.removeEventListener('click', handler3);
+				diff4.removeEventListener('click', handler4);
+				diff5.removeEventListener('click', handler5);
+				infoDiv.removeChild(difficulties);
+				infoDiv.removeChild(text);
+				resolve(5);
+			};
+
+			diff1.addEventListener('click', handler1);
+			diff2.addEventListener('click', handler2);
+			diff3.addEventListener('click', handler3);
+			diff4.addEventListener('click', handler4);
+			diff5.addEventListener('click', handler5);
+		});
+
+		const difficulties = document.createElement('div');
+		difficulties.style.display = 'flex';
+		difficulties.style.gap = '5px';
+
+		difficulties.appendChild(diff1);
+		difficulties.appendChild(diff2);
+		difficulties.appendChild(diff3);
+		difficulties.appendChild(diff4);
+		difficulties.appendChild(diff5);
+
+		infoDiv.appendChild(text);
+		infoDiv.appendChild(difficulties);
+
+		return promise;
 	}
 
 	// SHIP PLACEMENTS
@@ -137,21 +293,13 @@ function play() {
 
 		DOM.resetCursorPointers();
 
-		let done = false;
-		//Choose a random row & col, until is valid
-		do {
-			// Generate random 0-9
-			let randomRow = Math.floor(Math.random() * 10);
-			let randomCol = Math.floor(Math.random() * 10);
-
-			// Shot, if done === true, shot was valid
-			await helpers.delay(50);
-			if (player === 1) {
-				done = player2.gameboard.takeShot(randomRow, randomCol);
-			} else if (player === 2) {
-				done = player1.gameboard.takeShot(randomRow, randomCol);
-			}
-		} while (!done);
+		// Shot, if done === true, shot was valid
+		await helpers.delay(50);
+		if (player === 1) {
+			player2.gameboard.takeLuckyShot(difficulty);
+		} else if (player === 2) {
+			player1.gameboard.takeLuckyShot(difficulty);
+		}
 	}
 
 	function checkWinner() {
@@ -165,6 +313,4 @@ function play() {
 		if (player2.isDead()) return 'Player 1';
 		return 'No winner';
 	}
-
-	gameLoop();
 }

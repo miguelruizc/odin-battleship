@@ -183,6 +183,36 @@ export class Gameboard {
 		return true;
 	}
 
+	takeLuckyShot(difficulty) {
+		let luck = difficulty - 1;
+		let row = Math.floor(Math.random() * 10);
+		let col = Math.floor(Math.random() * 10);
+
+		// Reroll luck times
+		for (let i = 0; i < luck; i++) {
+			// Random coordinates
+			row = Math.floor(Math.random() * 10);
+			col = Math.floor(Math.random() * 10);
+
+			console.log(`Trying lucky shot (${i + 1}/${luck}) at [${row},${col}]`);
+
+			// Check if it would be a hit -> take it, else keep rerolling
+			if (this.board[row][col] === 1) {
+				this.takeShot(row, col);
+				console.log(`Lucky shot (${i + 1}/${luck}) hit at [row:${row},col${col}]`);
+				return;
+			}
+		}
+
+		// If not hit after luck, find a new valid position and take that shot
+		let valid = false;
+		while (!valid) {
+			valid = this.takeShot(row, col);
+			row = Math.floor(Math.random() * 10);
+			col = Math.floor(Math.random() * 10);
+		}
+	}
+
 	findShip(row, col) {
 		let foundShip = null;
 		let position = { row: row, col: col };
