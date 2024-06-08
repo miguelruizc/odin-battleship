@@ -27,17 +27,17 @@ body {
     grid-row-gap: 2px;
 }
 /* Y Axis */
-#yAxis1 { grid-area: 1 / 1 / 11 / 2; background-color: var(--PLAYER1);}
-#yAxis1 { display: flex; flex-direction: column;}
+#yAxis1 { grid-area: 1 / 1 / 11 / 2; background-color: var(--PLAYER1); outline: 1px solid rgba(0, 0, 0, 0.087);}
+#yAxis1 { display: flex; flex-direction: column; }
 #yAxis1 div {flex: 1}
 
 /* X Axis */
-#xAxis1 { grid-area: 11 / 2 / 12 / 12; background-color: var(--PLAYER1); }
+#xAxis1 { grid-area: 11 / 2 / 12 / 12; background-color: var(--PLAYER1); outline: 1px solid rgba(0, 0, 0, 0.087); }
 #xAxis1 { display: flex;}
 #xAxis1 div {flex: 1}
 
 /* Board */
-#board1 { grid-area: 1 / 2 / 11 / 12; background-color: #a3e8ff;}
+#board1 { grid-area: 1 / 2 / 11 / 12; background-color: #a3e8ff; outline: 1px solid rgba(0, 0, 0, 0.087);}
 
 /*END GRID LAYOUT*/
 #xAxis1 {
@@ -60,17 +60,17 @@ body {
     grid-row-gap: 2px;
 }
 /* Y Axis */
-#yAxis2 { grid-area: 1 / 1 / 11 / 2; background-color: var(--PLAYER2);}
+#yAxis2 { grid-area: 1 / 1 / 11 / 2; background-color: var(--PLAYER2); outline: 1px solid rgba(0, 0, 0, 0.087);} 
 #yAxis2 { display: flex; flex-direction: column;}
 #yAxis2 div {flex: 1}
 
 /* X Axis */
-#xAxis2 { grid-area: 11 / 2 / 12 / 12; background-color: var(--PLAYER2); }
+#xAxis2 { grid-area: 11 / 2 / 12 / 12; background-color: var(--PLAYER2); outline: 1px solid rgba(0, 0, 0, 0.087);}
 #xAxis2 { display: flex;}
 #xAxis2 div {flex: 1}
 
 /* Board */
-#board2 { grid-area: 1 / 2 / 11 / 12; background-color:#a3e8ff;}
+#board2 { grid-area: 1 / 2 / 11 / 12; background-color:#a3e8ff; outline: 1px solid rgba(0, 0, 0, 0.087);}
 
 /*END GRID LAYOUT*/
 #xAxis2 {
