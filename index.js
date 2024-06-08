@@ -104,13 +104,11 @@ function play() {
 			let randomCol = Math.floor(Math.random() * 10);
 
 			// Shot, if done === true, shot was valid
+			await helpers.delay(1);
 			if (player === 1) {
 				done = player2.gameboard.takeShot(randomRow, randomCol);
-				break;
-			}
-			if (player === 2) {
+			} else if (player === 2) {
 				done = player1.gameboard.takeShot(randomRow, randomCol);
-				break;
 			}
 		} while (!done);
 	}

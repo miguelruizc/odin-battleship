@@ -37,12 +37,7 @@ export class Gameboard {
 		// return false if not
 
 		// Get all positions
-		const coordinates = this.computeCoordinates(
-			row,
-			col,
-			direction,
-			ship.getLength()
-		);
+		const coordinates = this.computeCoordinates(row, col, direction, ship.getLength());
 
 		// check positions valid
 		if (!this.isPositionValid(coordinates)) return false;
@@ -89,10 +84,7 @@ export class Gameboard {
 				break;
 			}
 			// Case: Position taken
-			if (
-				this.board[arrayCoordinates[i].row][arrayCoordinates[i].col] !==
-				0
-			) {
+			if (this.board[arrayCoordinates[i].row][arrayCoordinates[i].col] !== 0) {
 				valid = false;
 				break;
 			}
@@ -109,8 +101,7 @@ export class Gameboard {
 		if (row < 0 || row > 9 || col < 0 || col > 9) return false;
 
 		// Case: Shot on previous shot
-		if (this.board[row][col] === 9 || this.board[row][col] === 5)
-			return false;
+		if (this.board[row][col] === 9 || this.board[row][col] === 5) return false;
 
 		// Case: Hit ship
 		if (this.board[row][col] !== 0) {
@@ -127,13 +118,12 @@ export class Gameboard {
 		}
 
 		// Case: Miss
-		else {
-			this.board[row][col] = 9;
 
-			this.publishBoardUpdate();
-			this.publishShotTaken(row, col);
-			return true;
-		}
+		this.board[row][col] = 9;
+
+		this.publishBoardUpdate();
+		this.publishShotTaken(row, col);
+		return true;
 	}
 
 	findShip(row, col) {
@@ -176,17 +166,11 @@ export class Gameboard {
 	}
 
 	subscribeToShotEvents() {
-		this.pubsub.subscribe(
-			this.takeShot.bind(this),
-			`shotEvent${this.player}`
-		);
+		this.pubsub.subscribe(this.takeShot.bind(this), `shotEvent${this.player}`);
 	}
 
 	subscribeToPlacementEvents() {
-		this.pubsub.subscribe(
-			this.placeShip.bind(this),
-			`placementEvent${this.player}`
-		);
+		this.pubsub.subscribe(this.placeShip.bind(this), `placementEvent${this.player}`);
 	}
 
 	publishBoardUpdate() {
