@@ -194,12 +194,9 @@ export class Gameboard {
 			row = Math.floor(Math.random() * 10);
 			col = Math.floor(Math.random() * 10);
 
-			console.log(`Trying lucky shot (${i + 1}/${luck}) at [${row},${col}]`);
-
 			// Check if it would be a hit -> take it, else keep rerolling
 			if (this.board[row][col] === 1) {
 				this.takeShot(row, col);
-				console.log(`Lucky shot (${i + 1}/${luck}) hit at [row:${row},col${col}]`);
 				return;
 			}
 		}

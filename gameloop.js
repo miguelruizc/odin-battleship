@@ -33,9 +33,6 @@ async function play() {
 
 	if (mode.player1 === 'human') difficulty = await choseDifficulty();
 
-	console.log(mode);
-	console.log('Difficulty: ' + difficulty);
-
 	gameLoop(mode.player1, mode.player2);
 
 	// GAME LOOP
@@ -88,7 +85,6 @@ async function play() {
 
 		const promise = new Promise((resolve) => {
 			const handler1 = () => {
-				console.log('bot vs bot button clicked');
 				botVsBotButton.removeEventListener('click', handler1);
 				humanVsBotButton.removeEventListener('click', handler2);
 				infoDiv.removeChild(botVsBotButton);
@@ -97,7 +93,6 @@ async function play() {
 			};
 
 			const handler2 = () => {
-				console.log('human vs bot button clicked');
 				humanVsBotButton.removeEventListener('click', handler2);
 				botVsBotButton.removeEventListener('click', handler1);
 				infoDiv.removeChild(botVsBotButton);
@@ -134,7 +129,6 @@ async function play() {
 
 		const promise = new Promise((resolve) => {
 			const handler1 = () => {
-				console.log('diff 1 clicked');
 				diff1.removeEventListener('click', handler1);
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
@@ -146,7 +140,6 @@ async function play() {
 			};
 
 			const handler2 = () => {
-				console.log('diff 2 clicked');
 				diff1.removeEventListener('click', handler1);
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
@@ -158,7 +151,6 @@ async function play() {
 			};
 
 			const handler3 = () => {
-				console.log('diff 3 clicked');
 				diff1.removeEventListener('click', handler1);
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
@@ -170,7 +162,6 @@ async function play() {
 			};
 
 			const handler4 = () => {
-				console.log('diff 4 clicked');
 				diff1.removeEventListener('click', handler1);
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
@@ -182,7 +173,6 @@ async function play() {
 			};
 
 			const handler5 = () => {
-				console.log('diff 5 clicked');
 				diff1.removeEventListener('click', handler1);
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
