@@ -169,7 +169,6 @@ export class DOM_manager {
 
 		if (!bot) {
 			document.addEventListener('wheel', this.rotateHandler);
-			console.log('add wheel listener');
 		}
 	}
 
@@ -225,7 +224,6 @@ export class DOM_manager {
 		this.removeHoverEventListeners();
 
 		document.removeEventListener('wheel', this.rotateHandler);
-		console.log('remove wheel listener');
 	}
 
 	addHoverEventListeners() {

@@ -71,6 +71,7 @@ function play() {
 			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${shipAsci})!`);
 
 			DOM.preparePlacement(player, ship, true);
+			DOM.resetCursorPointers();
 
 			await helpers.delay(500);
 
@@ -133,6 +134,8 @@ function play() {
 		DOM.prepareTurn(player);
 		helpers.clearTextContent(infoDiv);
 		infoDiv.prepend(`PLAYER ${player}: SHOT!`);
+
+		DOM.resetCursorPointers();
 
 		let done = false;
 		//Choose a random row & col, until is valid
