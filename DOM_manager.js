@@ -59,7 +59,7 @@ export class DOM_manager {
 					if (cell.textContent === '1') {
 						cell.style.backgroundColor = 'lightgrey';
 						cell.style.color = 'lightgrey';
-						cell.style.outline = '1px solid #aaaaaa30';
+						cell.style.outline = '1px solid #aaaaaa';
 					}
 				}
 

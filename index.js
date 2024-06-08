@@ -25,16 +25,18 @@ function play() {
 
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
+	helpers.clearTextContent(infoDiv);
+	infoDiv.style.backgroundColor = 'white';
 
 	// GAME LOOP
 	async function gameLoop() {
-		await shipPlacements(1);
+		await botShipPlacements(1);
 		await botShipPlacements(2);
 		let currentPlayer = 1;
 		while (!checkWinner()) {
 			// Take a turn
 			if (currentPlayer === 1) {
-				await takeTurn(currentPlayer);
+				await takeBotTurn(currentPlayer);
 			}
 			if (currentPlayer === 2) {
 				await takeBotTurn(currentPlayer);
@@ -46,6 +48,13 @@ function play() {
 		alert(`WINNER: ${getWinner()}!`);
 		helpers.clearTextContent(infoDiv);
 		infoDiv.prepend(`WINNER: ${getWinner()}!`);
+		if (getWinner() === 'Player 1') {
+			infoDiv.style.backgroundColor = '#67ff83';
+		}
+		if (getWinner() === 'Player 2') {
+			infoDiv.style.backgroundColor = '#fbff7e';
+		}
+
 		// Play again setup
 		DOM.deactivateInput();
 		startGameButton.style.display = 'block';
