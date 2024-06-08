@@ -18,6 +18,8 @@ export class DOM_manager {
 
 		this.board1Fog = false;
 		this.board2Fog = false;
+
+		this.initializeDarkThemeButton();
 	}
 
 	render() {}
@@ -292,5 +294,24 @@ export class DOM_manager {
 				element.style.outline = '1px solid #aaaaaa30';
 			}
 		}
+	}
+
+	initializeDarkThemeButton() {
+		const button = document.getElementById('darkButton');
+		button.addEventListener('click', () => {
+			const body = document.querySelector('body');
+
+			if (button.classList.contains('light')) {
+				body.style.backgroundColor = '#151515';
+				button.style.backgroundColor = 'white';
+				button.style.color = 'black';
+				button.classList.remove('light');
+			} else {
+				body.style.backgroundColor = 'white';
+				button.style.backgroundColor = '#151515';
+				button.style.color = 'white';
+				button.classList.add('light');
+			}
+		});
 	}
 }
