@@ -88,9 +88,67 @@ export class Gameboard {
 				valid = false;
 				break;
 			}
+			// Case: Adjacent to another ship
+			if (!this.checkAdjacentFree(arrayCoordinates)) {
+				valid = false;
+				break;
+			}
 		}
 
 		return valid;
+	}
+
+	checkAdjacentFree(shipCoords) {
+		// assume free
+		let free = true;
+
+		// For each ship cell, check all 8 surrounding
+		for (let i = 0; i < shipCoords.length; i++) {
+			let row = shipCoords[i].row;
+			let col = shipCoords[i].col;
+
+			// 8 Surrounding (if: outofbounds == free, if not, check position)
+			// 1, 2, 3
+			// 4, *, 5
+			// 6, 7, 8
+
+			let adj1 = { row: row - 1, col: col - 1 };
+			let adj2 = { row: row - 1, col: col };
+			let adj3 = { row: row - 1, col: col + 1 };
+			let adj4 = { row: row, col: col - 1 };
+			let adj5 = { row: row, col: col + 1 };
+			let adj6 = { row: row + 1, col: col - 1 };
+			let adj7 = { row: row + 1, col: col };
+			let adj8 = { row: row + 1, col: col + 1 };
+
+			if (adj1.row <= 9 && adj1.row >= 0 && adj1.col <= 9 && adj1.col >= 0) {
+				if (this.board[adj1.row][adj1.col] !== 0) free = false;
+			}
+			if (adj2.row <= 9 && adj2.row >= 0 && adj2.col <= 9 && adj2.col >= 0) {
+				if (this.board[adj2.row][adj2.col] !== 0) free = false;
+			}
+			if (adj3.row <= 9 && adj3.row >= 0 && adj3.col <= 9 && adj3.col >= 0) {
+				if (this.board[adj3.row][adj3.col] !== 0) free = false;
+			}
+			if (adj4.row <= 9 && adj4.row >= 0 && adj4.col <= 9 && adj4.col >= 0) {
+				if (this.board[adj4.row][adj4.col] !== 0) free = false;
+			}
+			if (adj5.row <= 9 && adj5.row >= 0 && adj5.col <= 9 && adj5.col >= 0) {
+				if (this.board[adj5.row][adj5.col] !== 0) free = false;
+			}
+			if (adj6.row <= 9 && adj6.row >= 0 && adj6.col <= 9 && adj6.col >= 0) {
+				if (this.board[adj6.row][adj6.col] !== 0) free = false;
+			}
+			if (adj7.row <= 9 && adj7.row >= 0 && adj7.col <= 9 && adj7.col >= 0) {
+				if (this.board[adj7.row][adj7.col] !== 0) free = false;
+			}
+			if (adj8.row <= 9 && adj8.row >= 0 && adj8.col <= 9 && adj8.col >= 0) {
+				if (this.board[adj8.row][adj8.col] !== 0) free = false;
+			}
+		}
+		console.log(`Checked adjacent free: ${free}`);
+
+		return free;
 	}
 
 	takeShot(row, col) {
