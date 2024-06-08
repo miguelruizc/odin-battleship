@@ -30,13 +30,13 @@ function play() {
 
 	// GAME LOOP
 	async function gameLoop() {
-		await botShipPlacements(1);
+		await shipPlacements(1);
 		await botShipPlacements(2);
 		let currentPlayer = 1;
 		while (!checkWinner()) {
 			// Take a turn
 			if (currentPlayer === 1) {
-				await takeBotTurn(currentPlayer);
+				await takeTurn(currentPlayer);
 			}
 			if (currentPlayer === 2) {
 				await takeBotTurn(currentPlayer);
@@ -96,7 +96,9 @@ function play() {
 
 		for (let ship of gameShips) {
 			helpers.clearTextContent(infoDiv);
-			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${ship})!`);
+			let shipAsci = '';
+			for (let i = 0; i < ship; i++) shipAsci += '■';
+			infoDiv.prepend(`PLAYER ${player}: PLACE SHIP(${shipAsci})!`);
 
 			DOM.preparePlacement(player, ship);
 			DOM.activateShipPreview(ship);

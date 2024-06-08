@@ -140,6 +140,9 @@ export class DOM_manager {
 		this.shipSize = shipSize;
 		this.shipDirection = 'horizontal';
 
+		this.resetCursorPointers();
+		this.activateCursorPointers(player);
+
 		this.rotateHandler = () => {
 			// Change direction
 			this.shipDirection = this.shipDirection === 'horizontal' ? 'vertical' : 'horizontal';
@@ -171,11 +174,37 @@ export class DOM_manager {
 		this.shotButtonToggle = true;
 		this.placeShipButtonToggle = false;
 		this.currentPlayer = player === 1 ? 2 : 1;
+
+		// Activate cursor:pointer for oponentBoard
+		this.resetCursorPointers();
+		this.activateCursorPointers(this.currentPlayer);
+	}
+
+	resetCursorPointers() {
+		// Reset cursor:pointer for both boards
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				const board1cell = document.getElementById(`player1,row${i},col${j}`);
+				const board2cell = document.getElementById(`player2,row${i},col${j}`);
+				board1cell.style.cursor = 'default';
+				board2cell.style.cursor = 'default';
+			}
+		}
+	}
+
+	activateCursorPointers(board) {
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				const cell = document.getElementById(`player${board},row${i},col${j}`);
+				cell.style.cursor = 'pointer';
+			}
+		}
 	}
 
 	deactivateInput() {
 		this.shotButtonToggle = false;
 		this.placeShipButtonToggle = false;
+		this.resetCursorPointers();
 	}
 
 	activateShipPreview(shipSize) {
@@ -213,7 +242,7 @@ export class DOM_manager {
 							let cellElement = document.getElementById(
 								`player${this.currentPlayer},row${cell.row},col${cell.col}`
 							);
-							cellElement.style.boxShadow = 'inset 0 0 0 1px orange';
+							cellElement.style.boxShadow = 'inset 0 0 0 1px blue';
 						}
 					});
 
