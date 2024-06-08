@@ -300,18 +300,41 @@ export class DOM_manager {
 		const button = document.getElementById('darkButton');
 		button.addEventListener('click', () => {
 			const body = document.querySelector('body');
+			const infoDiv = document.getElementById('gameInfo');
 
 			if (button.classList.contains('light')) {
-				body.style.backgroundColor = '#151515';
+				body.style.backgroundColor = '#22234f';
+				infoDiv.style.backgroundColor = '#22234f';
+				infoDiv.style.color = 'white';
+				infoDiv.style.border = '1px solid #5052a5';
 				button.style.backgroundColor = 'white';
 				button.style.color = 'black';
 				button.classList.remove('light');
 			} else {
 				body.style.backgroundColor = 'white';
-				button.style.backgroundColor = '#151515';
+				infoDiv.style.backgroundColor = 'white';
+				infoDiv.style.color = 'black';
+				infoDiv.style.border = '1px solid rgb(219, 219, 219)';
+				button.style.backgroundColor = 'white';
+				button.style.backgroundColor = '#22234f';
 				button.style.color = 'white';
 				button.classList.add('light');
 			}
 		});
+	}
+
+	resetGameInfoDiv() {
+		const button = document.getElementById('darkButton');
+		const infoDiv = document.getElementById('gameInfo');
+
+		if (button.classList.contains('light')) {
+			infoDiv.style.backgroundColor = 'white';
+			infoDiv.style.color = 'black';
+			infoDiv.style.border = '1px solid rgb(219, 219, 219)';
+		} else {
+			infoDiv.style.backgroundColor = '#22234f';
+			infoDiv.style.color = 'white';
+			infoDiv.style.border = '1px solid #5052a5';
+		}
 	}
 }

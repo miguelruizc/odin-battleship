@@ -26,7 +26,7 @@ function play() {
 	startGameButton.style.display = 'none'; // Hide startGame button
 	const infoDiv = document.getElementById('gameInfo');
 	helpers.clearTextContent(infoDiv);
-	infoDiv.style.backgroundColor = 'white';
+	DOM.resetGameInfoDiv();
 
 	// GAME LOOP
 	async function gameLoop() {
@@ -49,9 +49,11 @@ function play() {
 		infoDiv.prepend(`WINNER: ${getWinner()}!`);
 		if (getWinner() === 'Player 1') {
 			infoDiv.style.backgroundColor = '#67ff83';
+			infoDiv.style.color = 'black';
 		}
 		if (getWinner() === 'Player 2') {
 			infoDiv.style.backgroundColor = '#fbff7e';
+			infoDiv.style.color = 'black';
 		}
 
 		// Play again setup
