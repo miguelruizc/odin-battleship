@@ -169,6 +169,7 @@ export class DOM_manager {
 
 		if (!bot) {
 			document.addEventListener('wheel', this.rotateHandler);
+			document.addEventListener('keypress', this.rotateHandler);
 		}
 	}
 
@@ -224,6 +225,7 @@ export class DOM_manager {
 		this.removeHoverEventListeners();
 
 		document.removeEventListener('wheel', this.rotateHandler);
+		document.removeEventListener('keypress', this.rotateHandler);
 	}
 
 	addHoverEventListeners() {

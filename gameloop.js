@@ -164,7 +164,7 @@ async function play() {
 
 				infoDiv.removeChild(difficulties);
 				infoDiv.removeChild(text);
-				resolve(15);
+				resolve(11);
 			};
 
 			diff1.addEventListener('click', handler1);
