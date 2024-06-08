@@ -82,11 +82,8 @@ function play() {
 		helpers.clearTextContent(infoDiv);
 		infoDiv.prepend(`PLAYER ${player}: SHOT!`);
 
-		console.log('Starting wait for a shotTakenEvent');
-
 		await new Promise((resolve) => {
 			const handler = () => {
-				console.log('ShotTakenEvent happened, the wait is OVAH');
 				pubsub.unsubscribe(handler, 'shotTakenEvent');
 				resolve();
 			};

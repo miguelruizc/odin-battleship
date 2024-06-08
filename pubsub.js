@@ -25,9 +25,6 @@ export class Pubsub {
 		// Store event object
 		this.eventQ.enqueue(event);
 
-		// LOG PUBLISHED EVENT FOR DEBUGGING
-		console.log(this.eventQ.toString());
-
 		if (broadcast) this.broadcast();
 	}
 
@@ -52,8 +49,7 @@ export class Pubsub {
 		// Collect indices to remove
 		const indicesToRemove = [];
 		for (let i = 0; i < this.subscribers.length; i++) {
-			if (this.subscribers[i][eventType] === method)
-				indicesToRemove.push(i);
+			if (this.subscribers[i][eventType] === method) indicesToRemove.push(i);
 		}
 
 		// Remove subscribers starting from the end of the array

@@ -112,8 +112,6 @@ export class DOM_manager {
 			// Change direction
 			this.shipDirection = this.shipDirection === 'horizontal' ? 'vertical' : 'horizontal';
 
-			console.log('ship direction: ' + this.shipDirection);
-
 			// Clear board of preview styles
 			for (let i = 0; i < 10; i++) {
 				for (let j = 0; j < 10; j++) {
@@ -134,7 +132,7 @@ export class DOM_manager {
 			element.dispatchEvent(hoverEvent);
 		};
 
-		document.addEventListener('keypress', this.rotateHandler);
+		document.addEventListener('wheel', this.rotateHandler);
 	}
 
 	prepareTurn(player) {
@@ -161,7 +159,7 @@ export class DOM_manager {
 
 		// Remove hover event listeners
 		this.removeHoverEventListeners();
-		document.removeEventListener('keypress', this.rotateHandler);
+		document.removeEventListener('wheel', this.rotateHandler);
 	}
 
 	addHoverEventListeners() {
