@@ -117,15 +117,13 @@ async function play() {
 		text.textContent = 'Chose difficulty:';
 
 		const diff1 = document.createElement('button');
-		diff1.textContent = '1';
+		diff1.textContent = 'Easy';
 		const diff2 = document.createElement('button');
-		diff2.textContent = '2';
+		diff2.textContent = 'Normal';
 		const diff3 = document.createElement('button');
-		diff3.textContent = '3';
+		diff3.textContent = 'Hard';
 		const diff4 = document.createElement('button');
-		diff4.textContent = '4';
-		const diff5 = document.createElement('button');
-		diff5.textContent = '5';
+		diff4.textContent = '☠';
 
 		const promise = new Promise((resolve) => {
 			const handler1 = () => {
@@ -133,7 +131,6 @@ async function play() {
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
 				diff4.removeEventListener('click', handler4);
-				diff5.removeEventListener('click', handler5);
 				infoDiv.removeChild(difficulties);
 				infoDiv.removeChild(text);
 				resolve(1);
@@ -144,10 +141,9 @@ async function play() {
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
 				diff4.removeEventListener('click', handler4);
-				diff5.removeEventListener('click', handler5);
 				infoDiv.removeChild(difficulties);
 				infoDiv.removeChild(text);
-				resolve(2);
+				resolve(4);
 			};
 
 			const handler3 = () => {
@@ -155,10 +151,9 @@ async function play() {
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
 				diff4.removeEventListener('click', handler4);
-				diff5.removeEventListener('click', handler5);
 				infoDiv.removeChild(difficulties);
 				infoDiv.removeChild(text);
-				resolve(3);
+				resolve(7);
 			};
 
 			const handler4 = () => {
@@ -166,28 +161,16 @@ async function play() {
 				diff2.removeEventListener('click', handler2);
 				diff3.removeEventListener('click', handler3);
 				diff4.removeEventListener('click', handler4);
-				diff5.removeEventListener('click', handler5);
-				infoDiv.removeChild(difficulties);
-				infoDiv.removeChild(text);
-				resolve(4);
-			};
 
-			const handler5 = () => {
-				diff1.removeEventListener('click', handler1);
-				diff2.removeEventListener('click', handler2);
-				diff3.removeEventListener('click', handler3);
-				diff4.removeEventListener('click', handler4);
-				diff5.removeEventListener('click', handler5);
 				infoDiv.removeChild(difficulties);
 				infoDiv.removeChild(text);
-				resolve(5);
+				resolve(15);
 			};
 
 			diff1.addEventListener('click', handler1);
 			diff2.addEventListener('click', handler2);
 			diff3.addEventListener('click', handler3);
 			diff4.addEventListener('click', handler4);
-			diff5.addEventListener('click', handler5);
 		});
 
 		const difficulties = document.createElement('div');
@@ -198,7 +181,6 @@ async function play() {
 		difficulties.appendChild(diff2);
 		difficulties.appendChild(diff3);
 		difficulties.appendChild(diff4);
-		difficulties.appendChild(diff5);
 
 		infoDiv.appendChild(text);
 		infoDiv.appendChild(difficulties);
